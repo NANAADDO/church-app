@@ -1,0 +1,31 @@
+<?php
+
+namespace DummyNamespace\Models;
+
+use Illuminate\Database\Eloquent\Model;
+{{useSoftDeletes}}
+use OwenIt\Auditing\Contracts\Auditable;
+class DummyClass extends Model implements Auditable{
+
+   use \OwenIt\Auditing\Auditable;
+
+    {{softDeletes}}/**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = '{{table}}';
+
+    {{primaryKey}}
+
+    /**
+     * Attributes that should be mass-assignable.
+     *
+     * @var array
+     */
+    protected $fillable = {{fillable}};
+
+     protected $auditInclude = {{fillable}};
+
+    {{relationships}}
+}

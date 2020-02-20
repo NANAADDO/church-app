@@ -1,0 +1,139 @@
+{
+    "fields": [
+
+    {
+            "name": "name",
+            "type": "string"
+        }
+    ,
+
+        {
+            "name": "address",
+            "type": "string"
+        },
+        {
+            "name": "phone_number",
+            "type": "string"
+        }
+    ,
+        {
+            "name": "relationship_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        }
+    ,
+
+        {
+            "name": "marital_status_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        }
+    ,
+
+
+        {
+            "name": "marriage_type_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        }
+    ,
+
+        {
+            "name": "marriage_place",
+            "type": "string"
+        }
+    ,
+
+        {
+            "name": "date",
+            "type": "date"
+        }
+    ,
+
+        {
+            "name": "rev_minister",
+            "type": "string"
+        }
+    ,
+        {
+            "name": "church_id",
+            "type": "string"
+        }
+        ,{
+            "name": "member_id",
+            "type": "integer"
+        }
+
+    ,{
+            "name": "office",
+            "type": "string"
+        }
+    ,{
+            "name": "residence",
+            "type": "string"
+        }
+    ,{
+            "name": "locality_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        }
+    ],
+    "foreign_keys": [
+        {
+            "column": "relationship_id",
+            "references": "id",
+            "on": "relationship",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        },
+        {
+            "column": "marital_status_id",
+            "references": "id",
+            "on": "marital_status",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        },
+        {
+            "column": "marriage_type_id",
+            "references": "id",
+            "on": "marriage_type",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        },
+        {
+            "column": "member_id",
+            "references": "id",
+            "on": "memberdetails",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+    ,
+        {
+            "column": "locality_id",
+            "references": "id",
+            "on": "locality",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+    ],
+    "relationships": [
+
+    ],
+    "validations": [
+
+
+
+    ]
+}

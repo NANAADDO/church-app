@@ -1,0 +1,34 @@
+{
+    "fields": [
+        {
+            "name": "oldpasssword",
+            "type": "string"
+        },
+        {
+            "name": "password",
+            "type": "string"
+        }
+    ,
+        {
+            "name": "password_confirmation",
+            "type": "string"
+        }
+    ],
+    "foreign_keys": [
+
+    ],
+    "relationships": [
+
+    ],
+    "validations": [
+        {
+            "field": "password",
+            "rules": "required"
+        },
+        {
+            "field": "password_confirmation",
+            "rules": "required"
+        }
+
+    ]
+}

@@ -1,0 +1,58 @@
+{
+    "fields": [
+
+        {
+            "name": "profession_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        }
+    ,
+
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "phone_number",
+            "type": "string"
+        }
+    ,
+        {
+            "name": "address",
+            "type": "string"
+        }
+
+    ,{
+            "name": "member_id",
+            "type": "integer"
+        }
+    ],
+    "foreign_keys": [
+        {
+            "column": "profession_id",
+            "references": "id",
+            "on": "qualifications",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        },
+        {
+            "column": "member_id",
+            "references": "id",
+            "on": "memberdetails",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+
+    ],
+    "relationships": [
+
+    ],
+    "validations": [
+
+
+
+    ]
+}

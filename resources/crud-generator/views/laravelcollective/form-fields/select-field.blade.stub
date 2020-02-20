@@ -1,0 +1,1 @@
+{!! HtmlEntities::get_dynamic_form_complete_select_collective(['%%itemName%%', 'false','' ,"form-control","",[],$errors,$read,'%%itemName%%',(!empty($data)?$data->d->d:null)])!!}

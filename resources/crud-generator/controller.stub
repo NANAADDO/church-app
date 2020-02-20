@@ -1,0 +1,45 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyRootNamespaceHttp\Requests;
+use DummyRootNamespaceHttp\Controllers\Controller;
+
+use DummyRootNamespace{{modelNamespace}}Models\{{modelName}};
+use Illuminate\Http\Request;
+use App\Http\Controllers\General;
+
+class DummyClass extends General
+{
+   protected $model = {{modelName}}::class;
+      protected $viewname = '{{viewName}}';
+      protected $path_custom = '{{viewPath}}/' ;
+      protected $view_custom = '{{viewPath}}';
+      protected $searchparms = "";
+      protected $Rolelevel;
+      protected $roleaccess;
+      protected $LogGeneral;
+       protected $vali;
+       protected $validationRules = {{validationRules}}
+       protected $imgtostaff ;
+       protected $imgtoIDType;
+       protected $validoptional = [];
+
+
+    public function index(Request $request)
+    {
+        $keyword = $request->get('search');
+        $perPage = {{pagination}};
+
+        if (!empty($keyword)) {
+            $data = {{modelName}}::{{whereSnippet}}latest()->paginate($perPage);
+        } else {
+            $data = {{modelName}}::latest()->paginate($perPage);
+        }
+
+        return view('{{viewPath}}{{viewName}}.index', compact('data'));
+    }
+
+
+
+    }

@@ -1,0 +1,1 @@
+{!! HtmlEntities::get_dynamic_form_complete_collective_input(['%%fieldType%%','%%itemName%%','form-control','','',$errors,'',$read,'%%itemName%%']) !!}

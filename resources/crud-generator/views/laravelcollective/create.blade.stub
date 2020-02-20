@@ -1,0 +1,11 @@
+@extends('layouts.admin')
+
+@section('content')
+@include('crud.render',['title'=>'Create %%modelName%%'])
+                        {!! Form::open(['url' => '/%%routeGroup%%%%viewName%%', 'class' => 'form-horizontal user', 'files' => true]) !!}
+
+                        @include ('%%viewTemplateDir%%.form', ['formMode' => 'create','read'=>false,'route'=>'/%%routeGroup%%%%viewName%%'])
+
+                        {!! Form::close() !!}
+ @include('crud.renderfooter')
+@endsection

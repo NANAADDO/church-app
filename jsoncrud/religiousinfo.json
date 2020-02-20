@@ -1,0 +1,127 @@
+{
+    "fields": [
+
+        {
+            "name": "are_you_baptised",
+            "type": "select",
+            "options": {
+
+
+            }
+        }
+    ,
+
+        {
+            "name": "baptism_place",
+            "type": "string"
+        },
+        {
+            "name": "baptism_date",
+            "type": "date"
+        }
+    ,
+        {
+            "name": "baptism_rev_minister",
+            "type": "string"
+        }
+    ,
+
+        {
+            "name": "confirmation_place",
+            "type": "string"
+        }
+    ,
+
+
+        {
+            "name": "confirmation_date",
+            "type": "date"
+        }
+    ,
+
+        {
+            "name": "confirmation_rev_minister",
+            "type": "string"
+        }
+    ,
+
+        {
+            "name": "are_you_a_communicant",
+            "type": "select",
+            "options": {
+
+
+            }
+        }
+    ,
+
+        {
+            "name": "reason_why_not_a_communicant",
+            "type": "string"
+        }
+    ,
+        {
+            "name": "are_you_a_convert",
+            "type": "select",
+            "options": {
+
+
+            }
+        }
+    ,{
+            "name": "member_id",
+            "type": "integer"
+        },
+        {
+        "name": "prev_religious_denomination",
+        "type": "string"
+        }
+    ,{
+            "name": "date_converted",
+            "type": "date"
+        }
+    ,{
+            "name": "convert_rev_minister",
+            "type": "string"
+        }
+    ],
+    "foreign_keys": [
+        {
+            "column": "are_you_baptised",
+            "references": "id",
+            "on": "question_option",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        },
+        {
+            "column": "are_you_a_communicant",
+            "references": "id",
+            "on": "question_option",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        },
+        {
+            "column": "are_you_a_convert",
+            "references": "id",
+            "on": "question_option",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        },
+
+        {
+            "column": "member_id",
+            "references": "id",
+            "on": "memberdetails",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+    ],
+    "relationships": [
+
+    ],
+    "validations": [
+
+
+
+    ]
+}
