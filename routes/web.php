@@ -68,3 +68,4 @@ Route::resource('admin/memberdetailreport', 'Admin\\MemberdetailreportController
 Route::resource('admin/transportdetailreport', 'Admin\\TransportdetailreportController');
 Route::resource('admin/tithedetailreport', 'Admin\\TithedetailreportController');
 Route::resource('admin/welfaredetailreport', 'Admin\\WelfaredetailreportController');
+Route::resource('admin/othercollectiondetailreport', 'Admin\\othercollectiondetailreportController');

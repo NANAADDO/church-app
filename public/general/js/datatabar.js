@@ -151,6 +151,20 @@ function reportcol(type){
         }
     }
 
+    if(type==4) {
+            res =  [
+                {data: "name", title: "Name"},
+                {data: "member_id", title: "Member ID"},
+                {data: "tamount", title: "Amount"},
+                {data: "colname", title: "Collection Type"},
+                {data: "tpaid", title: "Amount Paid"},
+                {data: "tbal", title: "Balanced Left"},
+                {data: "ryear", title: "Year"},
+                {data: "date_paid", title: "Date Paid"}
+            ];
+
+        }
+
 
 
 
@@ -269,6 +283,10 @@ function get_multi_value(name){
       if(type==3) {
 
           return 'Member Welfare' +  $('#type_collection').find('option:selected').text() + ' Report';
+      }
+      if(type==4) {
+
+          return 'Member ' +  $('#type_collection').find('option:selected').text() + ' Report';
       }
   }
 
