@@ -14,7 +14,7 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>Name</th><th>Church ID</th><th>Baptised</th><th>Convert</th><th>Confirmed</th><th>Communicant</th><th></th>
+                                        <th>Name</th><th>Member ID</th><th>Baptised</th><th>Convert</th><th>Confirmed</th><th>Communicant</th><th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
