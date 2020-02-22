@@ -273,13 +273,10 @@
                         </div>
                     </div>
 
-
                     <div class="product-tab-list tab-pane fade" id="religion">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="review-content-section">
-
-
 
                                     <div class="chat-discussion" style="height: auto">
                                         <div class="chat-message">
@@ -303,9 +300,11 @@
                                                 </span>
 
                                                 </div>
+                                            @endif
                                         </div>
+
+
                                     </div>
-                                    @endif
 
 
                                     <div class="chat-discussion" style="height: auto">
@@ -333,9 +332,10 @@
                                                 </span>
 
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
-                                    @endif
+
 
 
                                     <div class="chat-discussion" style="height: auto">
@@ -435,8 +435,6 @@
                         </div>
                     </div>
 
-
-
                     <div class="product-tab-list tab-pane fade" id="groups">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -449,31 +447,35 @@
                                             </div>
                                             <p> <b>Does Member belong to any church Group ? </b><span style="padding-left: 50px;"><?php echo \App\Helpers\Member::get_state($data->is_member_part_of_church_groups);?></span></p>
 
-                                            <div class="message">
-                                                <a class="message-author" href="#"> Group Details </a>
-                                                <span  class="pull-right badge badge-success">Total Groups: {{count($data->groups)}}</span>
-                                                <HR/>
+                                            @if($data->is_member_part_of_church_groups==2)
+                                                <div class="message">
+                                                    <a class="message-author" href="#"> Group Details </a>
+                                                    <span  class="pull-right badge badge-success">Total Groups: {{count($data->groups)}}</span>
+                                                    <HR/>
 
-                                                <span class="message-content">
+                                                    <span class="message-content">
                                                     <?php
 
-                                                    foreach($data->groups as $key=>$gro){
+                                                        foreach($data->groups as $key=>$gro){
 
 
-                                                        $keys = $key + 1;
-                                                        echo
+                                                            $keys = $key + 1;
+                                                            echo
 
-                                                            ' <span class="badge badge-info" style="margin-left: 20px; font-size: 1.0em; padding: 7px;">'.$gro->groupname->name.'</span>';
+                                                                ' <span class="badge badge-info" style="margin-left: 20px; font-size: 1.0em; padding: 7px;">'.$gro->groupname->name.'</span>';
 
 
-                                                    }
+                                                        }
 
-                                                    ?>
+                                                        ?>
+
 
                                                 </span>
 
-                                            </div>
+                                                </div>
+                                            @endif
                                         </div>
+
 
 
                                     </div>
@@ -481,6 +483,7 @@
                             </div>
                         </div>
                     </div>
+
 
 
                 </div>

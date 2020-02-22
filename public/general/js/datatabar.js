@@ -154,9 +154,9 @@ function reportcol(type){
     if(type==4) {
             res =  [
                 {data: "name", title: "Name"},
-                {data: "member_id", title: "Member ID"},
-                {data: "tamount", title: "Amount"},
+                {data: "new_member_id", title: "Member ID"},
                 {data: "colname", title: "Collection Type"},
+                {data: "tamount", title: "Amount"},
                 {data: "tpaid", title: "Amount Paid"},
                 {data: "tbal", title: "Balanced Left"},
                 {data: "ryear", title: "Year"},

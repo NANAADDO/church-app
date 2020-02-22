@@ -67,10 +67,7 @@
                                                 <li><a href="#family">Family</a></li>
                                                 <li><a href="#marital">Marital </a></li>
                                                 <li><a href="#religion">Religious </a></li>
-
                                                 <li><a href="#groups">Groups</a></li>
-
-
                                             </ul>
                                         </div>
 

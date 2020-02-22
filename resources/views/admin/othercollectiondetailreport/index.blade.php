@@ -42,8 +42,6 @@
                 </div>
                 {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['type', 'false','type_collection' ,"form-control","",DBSELOPTION::get_all_collection_based_groups(5),$errors,$read,'  Other Collection Type?',null])!!}
 
-                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['month_paid', 'false','2' ,"form-control","",DBSELOPTION::get_all_month(),$errors,$read,'  By Month ?',null])!!}
-
                 {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['year_paid', 'false','3' ,"form-control","",DBSELOPTION::get_all_years(),$errors,$read,'  By Year ?',null])!!}
 
                 {!! HtmlEntities::get_dynamic_form_complete_collective_c3_input(['text','start_date','form-control','start','',$errors,'',$read,'Start Date ']) !!}
