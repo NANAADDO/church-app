@@ -1,0 +1,203 @@
+{
+    "fields": [
+        {
+            "name": "surname",
+            "type": "string"
+        },
+        {
+            "name": "other_names",
+            "type": "string"
+        },
+        {
+            "name": "birth_place",
+            "type": "string"
+        },
+
+        {
+            "name": "old_member_id",
+            "type": "string"
+        },
+
+        {
+            "name": "new_member_id",
+            "type": "string"
+        },
+        {
+            "name": "branch_id",
+            "type": "integer"
+        },
+        {
+            "name": "date_of_birth",
+            "type": "date"
+        },
+        {
+            "name": "nationality_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        },
+        {
+            "name": "title_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        },
+        {
+            "name": "hometown_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        },
+        {
+            "name": "address",
+            "type": "string"
+        },
+        {
+            "name": "house_number",
+            "type": "string"
+        },
+        {
+            "name": "street_name",
+            "type": "string"
+        },
+        {
+            "name": "locality_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        },
+        {
+            "name": "gender_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        },
+
+        {
+            "name": "phone_numbers",
+            "type": "string"
+        },
+        {
+            "name": "email",
+            "type": "string"
+        }
+
+    ],
+    "foreign_keys": [
+        {
+            "column": "branch_id",
+            "references": "id",
+            "on": "branches",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        },
+        {
+            "column": "nationality_id",
+            "references": "id",
+            "on": "countries",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+    ,
+        {
+            "column": "title_id",
+            "references": "id",
+            "on": "title",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+
+    ,
+        {
+            "column": "hometown_id",
+            "references": "id",
+            "on": "hometown",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+    ,
+        {
+            "column": "locality_id",
+            "references": "id",
+            "on": "locality",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+    ,
+        {
+            "column": "gender_id",
+            "references": "id",
+            "on": "gender",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+
+    ],
+    "relationships": [
+
+    ],
+    "validations": [
+
+            {
+                "field": "surname",
+                "rules": "required"
+            },
+            {
+                "field": "other_names",
+                "rules": "required"
+            },
+            {
+                "field": "birth_place",
+                "rules": "required"
+            },
+
+            {
+                "field": "nationality_id",
+                "rules": "required"
+            },
+            {
+                "field": "hometown_id",
+                "rules": "required"
+            },
+            {
+                "field": "address",
+                "rules": "required"
+            },
+            {
+                "field": "house_number",
+                "rules": "required"
+            },
+            {
+                "field": "street_name",
+                "rules": "required"
+            },
+            {
+                "field": "locality_id",
+                "rules": "required"
+            },
+        {
+            "field": "title_id",
+            "rules": "required"
+        },
+            {
+                "field": "gender_id",
+                "rules": "required"
+            },
+
+            {
+                "field": "phone_numbers",
+                "rules": "required"
+            }
+
+    ]
+}

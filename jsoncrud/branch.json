@@ -1,0 +1,72 @@
+{
+    "fields": [
+
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "location",
+            "type": "string"
+        },
+        {
+            "name": "region_id",
+            "type": "select",
+            "options": {
+                "o":"d"
+
+
+            }
+        },
+
+        {
+            "name": "country_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        },
+        {
+            "name": "address",
+            "type": "string"
+        },
+
+        {
+            "name": "phone_numbers",
+            "type": "string"
+        }
+
+    ],
+    "foreign_keys": [
+
+    ],
+    "relationships": [
+
+    ],
+    "validations": [
+
+
+        {
+            "field": "country_id",
+            "rules": "required"
+        },
+        {
+            "field": "region_id",
+            "rules": "required"
+        },
+        {
+            "field": "location",
+            "rules": "required"
+        },
+        {
+            "field": "address",
+            "rules": "required"
+        },
+        {
+            "field": "phone_numbers",
+            "rules": "required"
+        }
+
+    ]
+}

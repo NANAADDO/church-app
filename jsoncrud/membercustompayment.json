@@ -1,0 +1,105 @@
+
+{
+    "fields": [
+        {
+            "name": "amount",
+            "type": "decimal"
+        },
+        {
+            "name": "expected_amount",
+            "type": "decimal"
+        },
+
+        {
+            "name": "expected_people",
+            "type": "integer"
+        },
+        {
+            "name": "user_id",
+            "type": "integer"
+        }
+    ,
+        {
+            "name": "member_id",
+            "type": "select",
+            "options": {
+            }
+        },
+
+
+        {
+            "name": "date",
+            "type": "date"
+        },
+        {
+            "name": "funeral_date",
+            "type": "date"
+        },
+        {
+            "name": "txt_state_id",
+            "type": "select",
+            "options": {
+            }
+        },
+
+        {
+            "name": "description",
+            "type": "string"
+        }
+
+
+    ],
+    "foreign_keys": [
+        {
+            "column": "member_id",
+            "references": "id",
+            "on": "memberdetails",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+    ,
+
+        {
+            "column": "user_id",
+            "references": "id",
+            "on": "users",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+
+    ],
+    "relationships": [
+
+    ],
+    "validations": [
+        {
+            "field": "amount",
+            "rules": "required"
+        },
+        {
+            "field": "year",
+            "rules": "required"
+        }
+    ,
+        {
+            "field": "start_date",
+            "rules": "required"
+        }
+    ,
+        {
+            "field": "end_date",
+            "rules": "required"
+        }
+    ,
+        {
+            "field": "collection_id",
+            "rules": "required"
+        }
+    ,
+        {
+            "field": "member_id",
+            "rules": "required"
+        }
+
+    ]
+}

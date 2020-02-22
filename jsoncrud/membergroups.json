@@ -1,0 +1,25 @@
+{
+    "fields": [
+
+        {
+            "name": "group_id",
+            "type": "integer"
+        }
+
+    ,{
+            "name": "member_id",
+            "type": "integer"
+        }
+    ],
+    "foreign_keys": [
+
+    ],
+    "relationships": [
+
+    ],
+    "validations": [
+
+
+
+    ]
+}

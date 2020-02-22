@@ -1,0 +1,3 @@
+%%formFieldsHtml%%
+
+@include('crud.button',['formMode'=>$formMode,'url'=>$route,'urledit'=>!empty($data)?$route.'/'.$data->id.'/edit':'#'])

@@ -1,0 +1,31 @@
+{
+    "fields": [
+        {
+            "name": "roles",
+            "type": "select",
+            "options": {
+            }
+        },
+        {
+            "name": "permissions",
+            "type": "select",
+            "options": {
+
+            }
+        }
+
+    ],
+    "foreign_keys": [
+
+    ],
+    "relationships": [
+        {
+            "name": "user_id",
+            "type": "belongsTo",
+            "class": "App\\User"
+        }
+    ],
+    "validations": [
+
+    ]
+}

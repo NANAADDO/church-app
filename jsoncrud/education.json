@@ -1,0 +1,63 @@
+
+{
+    "fields": [
+        {
+            "name": "message_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        },
+        {
+            "name": "tag_id",
+            "type": "select",
+            "options": {
+
+
+            }
+        }
+
+        ,
+        {
+        "name": "state_id",
+        "type": "select",
+        "options": {
+
+
+        }
+        }
+    ],
+    "foreign_keys": [
+        {
+            "column": "qualification_id",
+            "references": "id",
+            "on": "qualifications",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        },
+        {
+            "column": "member_id",
+            "references": "id",
+            "on": "memberdetails",
+            "onDelete": "restrict",
+            "onUpdate": "cascade"
+        }
+
+    ],
+    "relationships": [
+
+    ],
+    "validations": [
+        {
+            "field": "message_id",
+            "rules": "required"
+        }
+,
+        {
+            "field": "tag_id",
+            "rules": "required"
+        }
+
+    ]
+}

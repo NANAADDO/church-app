@@ -1,0 +1,222 @@
+.border-left-primary {
+    border-left: 0.25rem solid #4e73df !important;
+}
+
+.border-bottom-primary {
+    border-bottom: 0.25rem solid #4e73df !important;
+}
+
+.border-left-secondary {
+    border-left: 0.25rem solid #858796 !important;
+}
+
+.border-bottom-secondary {
+    border-bottom: 0.25rem solid #858796 !important;
+}
+
+.border-left-success {
+    border-left: 0.25rem solid #1cc88a !important;
+}
+
+.border-bottom-success {
+    border-bottom: 0.25rem solid #1cc88a !important;
+}
+
+.border-left-info {
+    border-left: 0.25rem solid #36b9cc !important;
+}
+
+.border-bottom-info {
+    border-bottom: 0.25rem solid #36b9cc !important;
+}
+
+.border-left-warning {
+    border-left: 0.25rem solid #f6c23e !important;
+}
+
+.border-bottom-warning {
+    border-bottom: 0.25rem solid #f6c23e !important;
+}
+
+.border-left-danger {
+    border-left: 0.25rem solid #e74a3b !important;
+}
+
+.border-bottom-danger {
+    border-bottom: 0.25rem solid #e74a3b !important;
+}
+
+.border-left-light {
+    border-left: 0.25rem solid #f8f9fc !important;
+}
+
+.border-bottom-light {
+    border-bottom: 0.25rem solid #f8f9fc !important;
+}
+
+.border-left-dark {
+    border-left: 0.25rem solid #5a5c69 !important;
+}
+
+.border-bottom-dark {
+    border-bottom: 0.25rem solid #5a5c69 !important;
+}
+
+
+.texta-primary {
+    color: #4e73df !important;
+}
+
+
+
+.texta-secondary {
+    color: #858796 !important;
+}
+
+
+.texta-success {
+    color: #1cc88a !important;
+}
+
+
+.texta-info {
+    color: #36b9cc !important;
+}
+
+
+.texta-warning {
+    color: #f6c23e !important;
+}
+
+.texta-danger {
+    color: #e74a3b !important;
+}
+
+
+.texta-light {
+    color:#f8f9fc !important;
+}
+
+.texta-dark {
+    color: #5a5c69 !important;
+}
+
+
+
+
+.progress-bar.progress-bar-primary {
+    background: #4e73df !important;
+}
+
+
+
+.progress-bar.progress-bar-secondary {
+    background: #858796 !important;
+}
+
+
+.progress-bar.progress-bar-success {
+    background: #1cc88a !important;
+}
+
+
+.progress-bar.progress-bar-info {
+    background: #36b9cc !important;
+}
+
+
+.progress-bar.progress-bar-warning {
+    background: #f6c23e !important;
+}
+
+.progress-bar.progress-bar-danger {
+    background: #e74a3b !important;
+}
+
+
+.progress-bar.progress-bar-light {
+    background:#f8f9fc !important;
+}
+
+.progress-bar .progress-bar-dark {
+    background: #5a5c69 !important;
+}
+
+
+
+.badge-success {
+    background-color: #1cc88a !important;
+}
+
+
+.badge-info {
+    background-color: #36b9cc !important;
+}
+
+
+.badge-warning {
+    background-color: #f6c23e !important;
+}
+
+.badge-danger {
+    background-color: #e74a3b !important;
+}
+
+
+
+
+.shadow-sm {
+    -webkit-box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
+    box-shadow: 0 0.125rem 0.25rem 0 rgba(58, 59, 69, 0.2) !important;
+}
+
+.shadow {
+    -webkit-box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+}
+
+.shadow-lg {
+    -webkit-box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.shadow-none {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+.fa-2x {
+    font-size: 2em;
+}
+
+form.user .form-control-user,form.user .form-control-user:focus {
+    font-size: .8rem;
+    border-radius: 10rem;
+    padding: 1.0rem .8rem;
+}
+
+form.user .btn-user,form.user .btn-user:focus,btn-user:active {
+    font-size: .8rem;
+    border-radius: 10rem;
+    padding: .95rem 1.9rem;
+    margin: 20px 2px 2px 2px;
+
+
+}
+.btn-users {
+    font-size: .8rem;
+    border-radius: 10rem;
+    padding: .70rem 1.6rem;
+    margin: 10px 2px 2px 2px;
+
+
+}
+.has-error .form-control,.has-error .form-group {
+    font-size: .6rem;
+    border:1px solid #ff646d ;
+    color: #ff646d;
+}
+
+#cover-spin {
+
+
+}

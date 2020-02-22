@@ -1,0 +1,38 @@
+{
+    "fields": [
+        {
+            "name": "title",
+            "type": "string"
+        },
+        {
+            "name": "label",
+            "type": "text"
+        },
+        {
+            "name": "permissions",
+            "type": "select"
+        }
+
+    ],
+    "foreign_keys": [
+
+    ],
+    "relationships": [
+
+    ],
+    "validations": [
+        {
+            "field": "name",
+            "rules": "required|max:10"
+        },
+        {
+            "field": "label",
+            "rules": "required"
+        }
+    ,
+        {
+            "field": "permissions",
+            "rules": "required"
+        }
+    ]
+}
