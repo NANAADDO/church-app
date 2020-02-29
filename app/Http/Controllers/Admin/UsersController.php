@@ -28,7 +28,6 @@ class UsersController extends General
     protected $validationRules = [
         'first_name' => 'required',
         'surname' => 'required',
-        'username' => 'required',
         'other_names' => 'required',
         'phone_number' => 'required',
         'roles' => 'required',
@@ -36,7 +35,7 @@ class UsersController extends General
     ];
     protected $imgtostaff;
     protected $imgtoIDType;
-    protected $validoptional = [];
+    protected $validoptional = ['username' => 'required|unique:users'];
 
 
     public function index(Request $request)
@@ -58,7 +57,7 @@ class UsersController extends General
         //dd($request->all());
         if ($this->checkval($request) == 0) {
             session()->put('error', 'There were validation errors');
-            return $this->validateRequest($request);
+            return $this->validateRequestOption($request);
         }
 
         $data = $request->except('password');
@@ -107,7 +106,7 @@ class UsersController extends General
     public function update(Request $request, $id)
     {
 
-        if ($this->checkval($request) == 0) {
+        if ($this->checkvalsingle($request) == 0) {
             session()->put('error', 'There were validation errors');
             return $this->validateRequest($request);
         }

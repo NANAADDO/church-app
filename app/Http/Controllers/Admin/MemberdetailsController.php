@@ -343,7 +343,7 @@ class MemberdetailsController extends General
          * CREATE MEMBER CHURCH GROUPS BELONGING TO  PROFILE
          */
 
-        if($request->does_member_have_kids == $this->questyes) {
+        if($request->is_member_part_of_church_groups == $this->questyes) {
             $this->member_action_delete(2,Memberchurchgroups::class,$memberID);
             if($this->questyes && isset($request->churchgroups[0])){
             foreach ($request->churchgroups as $key => $value) {
@@ -483,6 +483,7 @@ class MemberdetailsController extends General
     public function build_validation($request)
 
     {
+		$rules =[];
         if($request->does_member_have_relation_in_accra == $this->questyes){
             $count = 0;
             foreach ($request->relation_locality_id as $key=>$value){
