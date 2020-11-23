@@ -33,17 +33,6 @@ class MemberdetailreportController extends General
     {
         $keyword = $request->get('search');
         $perPage = 25;
-        /*
-        if (!empty($keyword)) {
-            $data = DB::table('member_details')->where('payment_state',0)->where('collection_id',3)->where('user_id',$this->getuserid())->whereHas('member',function ($q)
-            use ($keyword){
-                return $q->where('surname', 'LIKE', "%$keyword%")->orwhere('other_names', 'LIKE', "%$keyword%")
-                    ->orwhere('new_member_id', 'LIKE', "%$keyword%");
-            })->paginate($perPage);
-
-
-        }
-        */
 
 
         if (!empty($keyword)) {
@@ -58,30 +47,7 @@ class MemberdetailreportController extends General
         return view('admin.memberdetailreport.index', compact('data'));
     }
 
-    public function st(Request $request)
-    {
 
-        $baseQuery = " ";
-        $whereArray = array();
-        if ($request->staffid != null)
-            $whereArray[] = " c.user_id='$request->staffid'";
-        if ($request->call_category != null)
-            $whereArray[] = " c.call_category_id='$request->call_category'";
-        if ($request->call_type != null)
-            $whereArray[] = " c.call_type={$request->call_type}";
-        if ($request->start_date && $request->end_date)
-            if ($request->start_date != null)
-                $whereArray[] = " c.call_date between '{$request->start_date}' and '{$request->end_date }' ";
-
-        $whereClause = implode(" and ", $whereArray);
-        if ($whereClause != null) {
-            $baseQuery = $baseQuery . " where " . $whereClause;
-            $data = \DB::select($baseQuery);
-        } else {
-            $data = Memberdetail::latest()->get();
-        }
-        return DataTables::of($data)->make(true);
-    }
 
 
     public function store(Request $request)
@@ -89,7 +55,7 @@ class MemberdetailreportController extends General
 
 
         if (\Request::ajax()) {
-            $baseQuery = "Select  m.date_joined,m.new_member_id , CONCAT( m.surname, ' ', m.other_names) as name ,m.phone_numbers,m.address,
+            $baseQuery = "Select  m.id, m.date_joined,m.new_member_id,m.old_member_id as oldID, CONCAT( m.surname, ' ', m.other_names) as name ,m.phone_numbers,m.address,
             c.name as country, h.name as home_town , g.name as gender_name,ms.name as marital_status, l.name as locality, p.name as profession  from  
              memberdetails m left join countries c  on m.nationality_id = c.id left join hometown h on m.hometown_id = h.id left join gender g on m.gender_id  
             = g.id  left join  marital_status ms  on m.marital_status_id = ms.id left join locality l on m.locality_id = l.id 
@@ -116,6 +82,9 @@ class MemberdetailreportController extends General
 
             if ($request->gender != null)
                 $whereArray[] = " m.gender_id={$request->gender}";
+
+            if ($request->member_status != null)
+                $whereArray[] = " m.status_id={$request->member_status}";
 
             if ($request->welfare_state!= null)
                 $whereArray[] = " m.does_member_want_to_join_welfare={$request->welfare_state}";

@@ -60,14 +60,14 @@ class MemberdetailsController extends General
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $data = Memberdetail::where('surname', 'LIKE', "%$keyword%")
+            $data = Memberdetail::where('surname', 'LIKE', "%$keyword%")->where('status_id','!=',3)
                 ->orWhere('other_names', 'LIKE', "%$keyword%")
                 ->orWhere('birth_place', 'LIKE', "%$keyword%")
                 ->orWhere('old_member_id', 'LIKE', "%$keyword%")
                 ->orWhere('new_member_id', 'LIKE', "%$keyword%")
                 ->latest()->paginate($perPage);
         } else {
-            $data = Memberdetail::with('Religious')->with('Education')->latest()->paginate($perPage);
+            $data = Memberdetail::with('Religious')->with('Education')->where('status_id','!=',3)->latest()->paginate($perPage);
         }
         //dd($data);
 
@@ -150,6 +150,9 @@ class MemberdetailsController extends General
             $response = $model::where('member_id', '=', $key)->where('type', '=', $type)->first();
             if (!empty($response)) {
                 $response->update($data);
+            }
+            else{
+                $model::create($data);
             }
         }
 
@@ -390,9 +393,9 @@ class MemberdetailsController extends General
             $religious['baptism_rev_minister'] = $request->baptism_rev_minister;
         }
         if($request->have_you_been_confirm == $this->questyes) {
-            $religious['confirmation_place'] =$request->baptism_place;
-            $religious['confirmation_date'] = $request->baptism_date;
-            $religious['confirmation_rev_minister'] = $request->baptism_rev_minister;
+            $religious['confirmation_place'] =$request->confirmation_place;
+            $religious['confirmation_date'] = $request->confirmation_date;
+            $religious['confirmation_rev_minister'] = $request->confirmation_rev_minister;
         }
 
         if($request->are_you_a_communicant == 1) {
@@ -534,6 +537,9 @@ class MemberdetailsController extends General
         if($request->does_member_have_identification_id == $this->questyes) {$rules['id_number'] = 'required';$rules['id_type_id'] = 'required';}
 
         if($request->does_member_want_to_join_welfare == $this->questyes) {$rules['date_joined_welfare'] = 'required';}
+
+        if($request->status_id == 3){$rules['date_died']='required';}
+
         return $rules;
 
 }

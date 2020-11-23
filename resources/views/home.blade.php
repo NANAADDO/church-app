@@ -5,10 +5,11 @@
 <div class="analytics-sparkle-area">
     <div class="container-fluid">
         <div class="row">
-
+     @csrf()
             <?php
             $permdash = \App\Helpers\Menu::get_all_sub_menu_permission();
            $tmember = Memberdata::get_total_member();
+           $date=\App\Helpers\GeneralVariables::currentdate();
 ?>
             @if(in_array(5,$permdash))
             {!! Dashboard::get_card_simple(['Total Staff',Staffdata::get_total_staff(),'fa fa-users',2,'L']) !!}
@@ -36,41 +37,26 @@
             {!! Dashboard::get_card_with_bar(['Total Convert',Memberdata::get_total_based_on_col('are_you_a_convert',2),'fa fa-users',2,'B',$tmember]) !!}
                 {!! Dashboard::get_card_with_bar(['Total Welfare Members',Memberdata::get_total_based_on_col_mem('does_member_want_to_join_welfare',2),'fa fa-users',2,'B',$tmember]) !!}
                 @endif
+<section id="show_dynamic_date_payment">
+                                    @include('includes.dash')
+</section>
+                <div class="col-md-3">
+                <div class="analytics-sparkle-line reso-mg-b-30 border-bottom-primary shadow" style="margin-bottom: 20px;">
+                    <div class="analytics-content" style="padding-bottom: 10px;">
+                        <small class="text-center" style="text-align: center;font-size:x-small;">SEARCH PAYMENT SUMMARY</small>
+                        <hr>
+                        <div class="row">
+                        <div class="col-md-10">
+                        <h5 class=" font-weight-bold"><input type="text" class="form-control date_selected" id="dated">
+                        </h5>
+                        </div>
+                        <div class="col-md-2">
+                            <small style="color: red;"></small>  <span class="tuition-fees" style="cursor: pointer;" id="search_day_payment"><i class="fa fa-search fa-2x texta-success"></i></span> </div>
+                        </div>
 
-                                    @if(in_array(19,$permdash))
-                {!! Dashboard::get_card_simple_desc(['Transport',Paymentdata::get_payment_total_based_collection_id(3),'fa fa-money',2,'B']) !!}
-                @endif
-
-                                        @if(in_array(21,$permdash))
-                {!! Dashboard::get_card_simple_desc(['Welfare Dues',Paymentdata::get_payment_total_based_collection_id(5),'fa fa-money',1,'B']) !!}
-                {!! Dashboard::get_card_simple_desc(['Welfare Levy',Paymentdata::get_payment_total_based_collection_id(6),'fa fa-money','4','B']) !!}
-                @endif
-                                            @if(in_array(20,$permdash))
-
-                {!! Dashboard::get_card_simple_desc(['Pledge',Paymentdata::get_payment_total_based_collection_id(2),'fa fa-money',3,'B']) !!}
-                @endif
-
-
-                                                @if(in_array(22,$permdash))
-                 @foreach(\App\Helpers\Given::get_church_given_based_on_group_id_only(5) as $key => $data)
-         <?php
-          $key=$key  + 1;
-                ?>
-                    {!! Dashboard::get_card_simple_desc([$data->description,Paymentdata::get_payment_total_based_collection_id($data->id),'fa fa-money',$key,'B']) !!}
-
-
-                @endforeach
-                @endif
-
-                     @if(in_array(23,$permdash))
-
-                {!! Dashboard::get_card_simple_desc(['Tithe',Paymentdata::get_payment_total_based_collection_id(1),'fa fa-money',5,'B']) !!}
-                @endif
-
-                         @if(in_array(23,$permdash) || in_array(22,$permdash) || in_array(20,$permdash) || in_array(21,$permdash) || in_array(19,$permdash))
-                {!! Dashboard::get_card_simple_desc(['Total Collected',Paymentdata::get_payment_total_based_collection_id(0),'fa fa-money',2,'B']) !!}
-                @endif
-
+                    </div>
+                </div>
+                </div>
         </div>
     </div>
 </div>

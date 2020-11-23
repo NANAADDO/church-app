@@ -51,7 +51,7 @@ class TransportcollectionController extends General
         pimgpath varchar(300),transid integer ,amount  decimal(18,2),tpaid  decimal(18,2),pmember_id integer, rmember_id integer,date_paid date)";
 
 
-            $sql = "select surname, date_joined,id as memid,new_member_id ,img_path from  memberdetails where (new_member_id like '%$keyword%' or 
+            $sql = "select CONCAT( surname, ' ', other_names) as surname, date_joined,id as memid,new_member_id ,img_path from  memberdetails where status_id !=3 and  (new_member_id like '%$keyword%' or 
  CONCAT( surname, ' ', other_names)  like '%$keyword%')";
 
             $db = DB::select($sql);

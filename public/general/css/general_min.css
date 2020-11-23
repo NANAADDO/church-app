@@ -1,3 +1,16 @@
+/************text message css**********************/
+
+
+.markedback {
+    background-color:#1cc88a;
+}
+
+.marked_back_red {
+    background-color:#e74a3b;
+}
+
+
+
 .border-left-primary {
     border-left: 0.25rem solid #4e73df !important;
 }

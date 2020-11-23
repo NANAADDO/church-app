@@ -30,21 +30,39 @@ class BirthdaynotificationController extends General
 
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
-        $perPage = 25;
 
-        if (!empty($keyword)) {
-            $data = Birthdaynotification::where('message_id', 'LIKE', "%$keyword%")
-                ->orWhere('tag_id', 'LIKE', "%$keyword%")
-                ->orWhere('state_id', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
-        } else {
-            $data = Birthdaynotification::latest()->paginate($perPage);
-        }
 
-        return view('admin.birthdaynotification.index', compact('data'));
+       $data =  Birthdaynotification::where('branch_id','=',auth()->user()->branch_id)->first();
+       if($data){
+          return  redirect('admin/birthdaynotification/'.$data->id.'/edit');
+       }
+
+
+
+        return view($this->path_custom.'.'.$this->viewname.'.'.'index');
     }
 
+
+    public function update(Request $request, $id)
+    {
+
+        if($this->checkval($request)==0) {
+            session()->put('error','There were validation errors');
+            return $this->validateRequest($request);
+        }
+        $var = $request->all();
+        if($request->state_id !=1){
+            $var['state_id']=0;
+        }
+
+        $data = $this->model::findOrFail($id);
+        $data->update($var);
+        session()->put('success','Data Updated Successful');
+
+        return redirect($this->path_custom.$this->viewname);
+
+
+    }
 
 
     }

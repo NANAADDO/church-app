@@ -4,7 +4,7 @@
 @include('crud.render',['title'=>'Reset password'])
                         {!! Form::open(['url' => '/admin/resetpassword', 'class' => 'form-horizontal user', 'files' => true]) !!}
 
-                        @include ('admin.resetpassword.form', ['formMode' => 'Change Password','read'=>false,'route'=>'/admin/resetpassword'])
+                        @include ('admin.resetpassword.form', ['formMode' => 'Change Password','read'=>false,'route'=>'/home'])
 
                         {!! Form::close() !!}
  @include('crud.renderfooter')

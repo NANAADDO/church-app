@@ -10,9 +10,9 @@
 		============================================ -->
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
     <!-- Google Fonts
-		============================================ -->
+		============================================
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
-    <!-- Bootstrap CSS
+     Bootstrap CSS
 		============================================ -->
     <link rel="stylesheet" href="{{asset('admin/css/bootstrap.min.css')}}">
     <!-- Bootstrap CSS
@@ -169,7 +169,7 @@
     ============================================ -->
 <script src="{{asset('admin/js/main.js')}}"></script>
 <script src="{{asset('general/js/customizarrr.js')}}"></script>
-<script src="{{asset('general/js/jstextmessager.js')}}"></script>
+<script src="{{asset('general/js/textmessaging.js')}}"></script>
 <script src="{{asset('admin/js/chosen/chosen.jquery.js')}}"></script>
 <script src="{{asset('admin/js/chosen/chosen-active.js')}}"></script>
 <script src="{{asset('admin/js/datepicker/jquery-ui.min.js')}}"></script>

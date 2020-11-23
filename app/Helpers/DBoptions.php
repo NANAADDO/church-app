@@ -16,6 +16,7 @@ use App\Models\collectiongroup;
 use App\Models\IDTypes;
 use App\Models\Messagetag;
 use App\Models\Months;
+use App\Models\NotificationTime;
 use App\Models\Paymentplantype;
 use App\Models\Questionoption;
 use App\Models\Textmessage;
@@ -37,7 +38,15 @@ class DBoptions {
 
     protected static $menu_table = 'parent_module';
 
+    public static function get_all_period()
+    {
+        return self::dbstructure(NotificationTime::class,'name','id');
+    }
 
+    public  static function get_all_collection_based_groups_raw($value){
+
+        return self::dbstructure6(Churchgiven::class,'name','groups_id',$value,'id');
+    }
     public static function get_all_month()
     {
         return self::dbstructure(Months::class,'name','id');
@@ -238,8 +247,13 @@ class DBoptions {
 
     }
     public  static function get_all_collection_based_groups($value){
+        if($value=='*'){
+            return self::dbstructure(Churchgiven::class, 'name', 'id');
+        }
+        else {
 
-        return self::dbstructure5(Churchgiven::class,'name','id','groups_id',$value);
+            return self::dbstructure5(Churchgiven::class, 'name', 'id', 'groups_id', $value);
+        }
     }
 
 
@@ -247,7 +261,8 @@ class DBoptions {
     public static function get_all_memberID()
     {
 
-        return self::dbstructure3('memberdetails',['new_member_id','id','surname','other_names','date_joined']);
+        return self::dbstructure3('memberdetails',['new_member_id','id','surname','other_names','date_joined',
+            'does_member_want_to_join_welfare','date_joined_welfare']);
 
     }
 
@@ -261,6 +276,10 @@ class DBoptions {
     public static function dbstructure5($table,$textname,$dbkey,$where,$value){
 
         return  $table::orderby($textname)->where($where,$value)->pluck($textname,$dbkey);
+    }
+    public static function dbstructure6($table,$textname,$where,$value,$dbkey){
+
+        return  $table::orderby($textname)->where($where,$value)->get([$textname,$dbkey]);
     }
     public static function dbstructure2($table){
 

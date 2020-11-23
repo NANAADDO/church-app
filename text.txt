@@ -1,0 +1,13 @@
+rows
+name
+memberID
+OLDid
+desscrip
+total
+amountpaid
+balance
+date
+tmonth
+tmonthpaid
+
+year

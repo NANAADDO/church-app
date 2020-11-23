@@ -26,7 +26,10 @@
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="review-content-section">
                                             <div id="dropzone1" class="pro-ad addcoursepro">
-                                                {!! HtmlEntities::get_dynamic_form_complete_select_collective(['status_id', 'false','' ,"form-control","",DBSELOPTION::get_all_status(),$errors,$read,'Member Status '.$re,null])!!}
+                                                {!! HtmlEntities::get_dynamic_form_complete_select_collective(['status_id', 'false','memberStatus' ,"form-control","",DBSELOPTION::get_all_status(),$errors,$read,'Member Status '.$re,null])!!}
+                                                <div id="date_died_show" style="display: {{(old('status_id') ==3 ?  'block;':'none;')}}">
+                                                    {!! HtmlEntities::get_dynamic_form_complete_collective_input(['text','date_died','form-control','dated5','',$errors,'Date Died',$read,'']) !!}
+                                                </div>
 
                                                 {!! HtmlEntities::get_dynamic_form_complete_collective_input(['text','surname','form-control','','',$errors,'',$read,'Surname '.$re]) !!}
 
@@ -529,7 +532,7 @@
 
                                                                 {!! HtmlEntities::get_dynamic_form_complete_collective_input(['text','confirmation_place','form-control','','',$errors,'',$read,'Confirmation Place '.$re,(!empty($data->religious)?$data->religious->confirmation_place:null)]) !!}
 
-                                                                {!! HtmlEntities::get_dynamic_form_complete_collective_input(['date','confirmation_date ','form-control','dated3','',$errors,'',$read,'Confirmation Date  '.$df,(!empty($data->religious)?$data->religious->confirmation_date:null)]) !!}
+                                                                {!! HtmlEntities::get_dynamic_form_complete_collective_input(['date','confirmation_date','form-control','dated3','',$errors,'',$read,'Confirmation Date  '.$df,(!empty($data->religious)?$data->religious->confirmation_date:null)]) !!}
 
                                                                 {!! HtmlEntities::get_dynamic_form_complete_collective_input(['text','confirmation_rev_minister','form-control','','',$errors,'',$read,'Confirmation Rev. Minister ',(!empty($data->religious)?$data->religious->confirmation_rev_minister:null)]) !!}
                                                             </div>

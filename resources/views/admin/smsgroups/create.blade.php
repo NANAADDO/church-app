@@ -6,6 +6,7 @@
 
                         @include ('admin.smsgroups.form', ['formMode' => 'create','read'=>false,'route'=>'/admin/smsgroups'])
 
-                        {!! Form::close() !!}
+
+    {!! Form::close() !!}
  @include('crud.renderfooter')
 @endsection

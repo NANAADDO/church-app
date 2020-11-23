@@ -178,7 +178,7 @@
 <script type="text/javascript" src="{{asset('admin/datatables/buttonscolVis.min.js')}}"></script>
 <script src="{{asset('admin/js/main.js')}}"></script>
 <script src="{{asset('general/js/customizarrr.js')}}"></script>
-<script src="{{asset('general/js/datatabar.js')}}"></script>
+<script src="{{asset('general/js/datatablereporting.js')}}"></script>
 <script src="{{asset('admin/js/chosen/chosen.jquery.js')}}"></script>
 <script src="{{asset('admin/js/chosen/chosen-active.js')}}"></script>
 <script src="{{asset('admin/js/datepicker/jquery-ui.min.js')}}"></script>

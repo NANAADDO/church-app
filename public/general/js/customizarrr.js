@@ -189,6 +189,17 @@
       }
 
       })
+      $('body').on('change','#memberStatus',function (e) {
+
+          if($(this).val()==='3'){
+              $('#date_died_show').show('slow');
+
+          }
+          else{
+              $('#date_died_show').hide('fast');
+          }
+
+      })
 
       $('body').on('change','.other_quest',function (e) {
 
@@ -291,7 +302,17 @@ $(path_to_cal).html(0);
       var path_to_cal = $('#path_to_call');
       var search_to_reverse_receipt = $('.search_to_reverse_receipt');
 
+/*************************************DISPLAY CURRENT PAYMENT DETAILS ON DASHBOARD*******************/
 
+     $('#search_day_payment').click(function (e) {
+
+var formData = {
+     'dated' : $('.date_selected').val(),
+    '_token'    :  $('input[name=_token]').val()
+};
+
+         ajaxcalldynamic('post',formData,'payment_history_summary','#show_dynamic_date_payment')
+     });
 
 
       /*****************SHOW PAYMENT BY RECEIPT SEARCHED*****************************/
@@ -1021,7 +1042,8 @@ clear_payment_fields();
           ids = id.split('-');
 
           ident = ids[1]+'_'+ids[0];
-          $('#show_payee_info_hear').html($('#get_year_and_payee_info_'+ ids[1]).html());
+          $('#show_payee_info_hear').html($('#get_year_and_payee_info_'+ ids[0]).html());
+          $('#t_payee_name').html( $('#get_payee_name_'+ ids[1]).html());
           $('#stat_icon').html($('#stat_profile_img_' + ids[1]).html());
           ap = $('#amount_paid' + ident).text();
           $('#p_paid').val(ap);
@@ -1215,6 +1237,36 @@ function option_types(data,displayname,type){
           });
 
       }
+
+
+      function ajaxcalldynamic(Http_verb,formData,URLLocation,display_section){
+           console.log(formData);
+          $.ajax({
+              type        : Http_verb, // define the type of HTTP verb we want to use (POST for our form)
+              url         : BaseURL + '/' + URLLocation, // the url where we want to POST
+              data        : formData,
+              beforeSend: function() {
+
+                  $("#cover-spin").fadeIn('slow');
+              }
+          }).done(function(data) {
+              console.log(data);
+              $(display_section).html(data);
+
+
+              $("#cover-spin").fadeOut('slow');
+
+          }).fail(function(response) {
+
+              // log data to the console so we can see
+              console.log(response.responseText);
+              return false;
+
+          });
+
+      }
+
+
 
 
 

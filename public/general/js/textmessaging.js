@@ -1,5 +1,5 @@
   $(document).ready(function () {
-     // alert('ljj');
+      //alert('ljj');
 
       smsmessagecalculation();
       birthday_notification();
@@ -37,6 +37,54 @@ $("#charactno").keyup(function(){
 
       });
 
+      /***********************GLOBAL VARIABLES HERE*************************************************/
+      var contact_identifier = ".delete-";
+
+      /*********************************CONTROLLING CONTACT SELECTION*********************************************************/
+      $(".selectcheck").change(function(){
+          var sum = 0;
+          idcheck =$(this).attr('id');
+          selected= idcheck.split("-");
+          id = selected[1];
+          marked = contact_identifier + id;
+          var cloned_data = ".clonedata-"+ id;
+          var selectedOpts = $(".show_selected_members");
+          var  selectedParticipantsArray =  [];
+          var totalchecked = $(".total-select");
+          var show_selected_but = $('#show_selected_but');
+          $('.selectcheck:checked').each(function() {
+              selectedParticipantsArray.push($(this).val());
+          });
+          $("#ids").html(selectedParticipantsArray);
+          if ($(this).prop('checked')) {
+              $(marked).addClass("marked_back_red");
+              //console.log($(marked).html());
+              $(selectedOpts).append('<tr class="delete_from_selected_tray_' + id + '">' +  $(marked).html() + '<td><td><a href="javascript:void(0);" id="'+ id +'" class="btn btn-danger btn-xs selected_tray_item" title="remove Contact">' +
+                  '<i class="glyphicon glyphicon-trash"></i></a></td></td></tr>');
+              $(marked).fadeOut('slow');
+          }
+          else {
+
+              $(this).attr("checked", "false");
+              $(marked).removeClass("marked_back_red");
+          }
+
+          var totalselect = $(".selectcheck:checked").length;
+           display_view_selection_button()
+
+      });
+
+      /**************************TRAY ITEM DELETION FUNCTION**************************************/
+      $('body').on('click','.selected_tray_item',function () {
+
+          tray_id =$(this).attr('id');
+          deleting_tray_item = $('.delete_from_selected_tray_' + tray_id);
+          $(deleting_tray_item).addClass("marked_back_red");
+          $(deleting_tray_item).remove();
+          $(contact_identifier + tray_id).fadeIn('slow');
+          $(contact_identifier + tray_id).removeClass('marked_back_red');
+
+      });
 
 /******************************************************* ALL REUSABLE FUNCTIONS IN HERE***********************/
 
@@ -78,6 +126,18 @@ function smsmessagecalculation() {
           }
       }
 
+      function display_view_selection_button(totalchecked,totalselect){
+
+          $(totalchecked).html(totalselect);
+
+          if(totalselect > 0){
+              $(show_selected_but).fadeIn('slow');
+          }
+          else{
+              $(show_selected_but).fadeOut('slow');
+
+          }
+      }
 
       function tmajaxcall(formData,Http_verb,URLLocation,type,prompt,redirect){
           var cond;

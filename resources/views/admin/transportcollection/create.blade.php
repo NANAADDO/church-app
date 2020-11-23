@@ -47,11 +47,14 @@
                         <p><small><b > <span id="show_header_title"></span> <span style="color: red;" id="show_pledge_year"></span></b></small></p>
                         <div id="show_payee_info_hear">
 
+
                         </div>
+
                     </div>
                     <div class="stats-icon text-center" id="stat_icon">
                         <img src="{{asset('general/img/icons/employ.jpg')}}" id="show_rimg"  style="max-height:70px; max-width: 70px; border-radius: 50%;border: solid 1px #C7C7C7;">
                     </div>
+                    <p><small><b>Payee Name:</b></small><small style="color: steelblue;" id="t_payee_name"></small></p>
                     <hr/>
                     <div class="result_show">
 

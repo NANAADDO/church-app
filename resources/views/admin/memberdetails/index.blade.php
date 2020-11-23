@@ -10,6 +10,7 @@
                 @csrf()
                            @include('crud.top',['routename'=>'admin/memberdetails','modulename'=>'Member Profile'])
   @if ($data->count())
+      @csrf
                         <div class="table-responsive">
                             <table class="table table-borderless">
                                 <thead>

@@ -45,7 +45,7 @@ class OthercollectionsController extends General
 
             $table = "CREATE TEMPORARY TABLE IF NOT EXISTS " . $tempname . " (rname varchar(100),ryear year,date_joined date,
         pimgpath varchar(300),point_sub_id integer ,amount  decimal(18,2),tpaid  decimal(18,2),pmember_id integer,pmember_ch_id varchar(100), totalm integer,date_paid date)";
-            $sql = "select CONCAT( surname, ' ', other_names) name, date_joined,id as memid,new_member_id ,img_path from  memberdetails where (new_member_id like '%$keyword%' or 
+            $sql = "select CONCAT( surname, ' ', other_names) name, date_joined,id as memid,new_member_id ,img_path from  memberdetails where  status_id !=3 and (new_member_id like '%$keyword%' or 
  CONCAT( surname, ' ', other_names)  like '%$keyword%')";
 
             $db = DB::select($sql);

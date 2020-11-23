@@ -24,14 +24,14 @@
                     <label name="collection Type" class="login2"> Member Name</label>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="form-group">
-                            <select class="form-control form-control-user chosen-select"  tabindex="-1"  style="font-size: 1.0rem;height:50px; border-radius:2px; display: none;" size="" id=""
+                            <select class="form-control form-control-user chosen-select name_selected"  tabindex="-1"  style="font-size: 1.0rem;height:50px; border-radius:2px; display: none;" size="" id=""
                                     name="member_id">
                                 <option selected="selected" value="">
 
                                     select option.. </option>
 
                                 @foreach(DBSELOPTION::get_all_memberID() as $dat )
-                                    <option value="{{$dat->id}}_{{$dat->date_joined}}" >{{$dat->surname.' '. $dat->other_names.'['.$dat->new_member_id.']'}}</option>
+                                    <option value="{{$dat->id}}_{{$dat->date_joined}}_{{$dat->does_member_want_to_join_welfare}}_{{$dat->date_joined_welfare}}" >{{$dat->surname.' '. $dat->other_names.'['.$dat->new_member_id.']'}}</option>
 
 
 
@@ -40,15 +40,16 @@
                         </div>
                     </div>
                 </div>
+
                 {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['type', 'false','type_collection' ,"form-control","",DBSELOPTION::get_all_collection_based_groups(2),$errors,$read,'  Welfare Type?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['year_paid', 'false','3' ,"form-control","",DBSELOPTION::get_all_years(),$errors,$read,'  Start Year ?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['end_year', 'false','3' ,"form-control","",DBSELOPTION::get_all_years(),$errors,$read,'   End Year?',null])!!}
 
-                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['month_paid', 'false','2' ,"form-control","",DBSELOPTION::get_all_month(),$errors,$read,'  By Month ?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['start_month', 'false','2' ,"form-control","",DBSELOPTION::get_all_month(),$errors,$read,'  Start Month ?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['end_month', 'false','2' ,"form-control","",DBSELOPTION::get_all_month(),$errors,$read,'  End Month ?',null])!!}
 
-                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['year_paid', 'false','3' ,"form-control","",DBSELOPTION::get_all_years(),$errors,$read,'  By Year ?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['fetch_type', 'false','19' ,"form-control","",['1'=>'None paid month','2'=>'paid month','3'=>'group by year','4'=>'group by year range'],$errors,$read,' Filter By?',null])!!}
 
-                {!! HtmlEntities::get_dynamic_form_complete_collective_c3_input(['text','start_date','form-control','start','',$errors,'',$read,'Start Date ']) !!}
-                {!! HtmlEntities::get_dynamic_form_complete_collective_c3_input(['text','end_date','form-control','finish','',$errors,'',$read,'End Date']) !!}
-                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['fetch_type', 'false','19' ,"form-control","",['1'=>'None paid month','2'=>'paid month'],$errors,$read,' Sort By?',null])!!}
 
 
                 <div>
@@ -99,5 +100,9 @@
     </div>
     </div>
 
+    @foreach(DBSELOPTION::get_all_collection_based_groups_raw(2) as $db)
+        <p style="display: none;" id="show_{{$db->id}}" class="get_all_welfar"><option value="{{$db->id}}">{{$db->name}}</option></p>
+
+    @endforeach
 
 @endsection

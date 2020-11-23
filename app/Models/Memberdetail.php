@@ -21,11 +21,11 @@ class Memberdetail extends Model implements Auditable{
     protected $fillable = ['surname', 'other_names', 'birth_place', 'old_member_id', 'new_member_id', 'branch_id', 'date_of_birth', 'nationality_id', 'title_id', 'hometown_id', 'address', 'house_number', 'street_name', 'locality_id', 'gender_id', 'phone_numbers','profession_id', 'email','img_path','are_you_a_literate','are_you_employed',
         'does_member_have_kids','does_member_have_relation_in_accra','date_joined','marital_status_id',
         'is_member_part_of_church_groups','does_member_want_to_join_welfare','date_joined_welfare','does_member_have_any_emergency_contact',
-        'id_type_id','id_number','does_member_have_identification_id','status_id'];
+        'id_type_id','id_number','does_member_have_identification_id','status_id','date_died'];
 
      protected $auditInclude = ['surname', 'other_names', 'birth_place', 'old_member_id', 'new_member_id', 'branch_id', 'date_of_birth', 'nationality_id', 'title_id', 'hometown_id', 'address', 'house_number', 'street_name', 'locality_id', 'gender_id','profession_id', 'phone_numbers', 'email','img_path','img_path','are_you_a_literate','are_you_employed',
          'does_member_have_kids','does_member_have_relation_in_accra','date_joined','marital_status_id','is_member_part_of_church_groups','does_member_want_to_join_welfare','date_joined_welfare',
-         'does_member_have_any_emergency_contact','id_type_id','id_number','does_member_have_identification_id','status_id'];
+         'does_member_have_any_emergency_contact','id_type_id','id_number','does_member_have_identification_id','status_id','date_died'];
 
     protected $with=['kids','spouse','Education','religious','marital','groups','Emergency','idtype','Employment'];
 

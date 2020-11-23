@@ -30,6 +30,27 @@ else {
 return $val;
 }
 
+
+    public static function get_payment_total_based_collection_id_and_date($id,$date){
+
+        if($id==2) {
+            $in = [2,4];
+            $val = payment_history::whereIn('collection_id', $in)->where('date_paid', $date)->where('user_id', GeneralVariables::getuserid())->sum('amount_paid');
+
+        }
+        else if($id==0){
+            $val = payment_history::where('date_paid', $date)->where('user_id', GeneralVariables::getuserid())->sum('amount_paid');
+
+        }
+        else {
+            $val = payment_history::where('collection_id', $id)->where('date_paid', $date)->where('user_id', GeneralVariables::getuserid())->sum('amount_paid');
+
+        }
+
+        return $val;
+    }
+
+
     public static function get_daily_payment_details_by_user($id){
        $ids = Given::get_church_given_based_on_group($id);
 

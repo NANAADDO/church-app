@@ -21,7 +21,8 @@ class CreateEducationTable extends Migration
             $table->integer('member_id')->unsigned();
             $table->foreign('qualification_id')->references('id')->on('qualifications')->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('member_id')->references('id')->on('memberdetails')->onDelete('restrict')->onUpdate('cascade');
-            });
+
+        });
     }
 
     /**
