@@ -7,9 +7,13 @@ use App\Helpers\Given;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Models\Churchcustompayment;
+use App\Models\Memberdetail;
 use App\Models\Othercollection;
 use App\Models\payment_history;
+use App\Models\Transport;
 use App\Traits\PaymentHistoryTrait;
+use App\Traits\SMSTraits;
 use Illuminate\Http\Request;
 use App\Http\Controllers\General;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 class OthercollectionsController extends General
 {
     use PaymentHistoryTrait;
+    use SMSTraits;
    protected $model = payment_history::class;
       protected $viewname = 'othercollections';
       protected $path_custom = 'admin/' ;
@@ -36,6 +41,7 @@ class OthercollectionsController extends General
 
     public function index(Request $request)
     {
+
         $keyword = $request->get('search');
         $perPage = 25;
 
@@ -45,7 +51,7 @@ class OthercollectionsController extends General
 
             $table = "CREATE TEMPORARY TABLE IF NOT EXISTS " . $tempname . " (rname varchar(100),ryear year,date_joined date,
         pimgpath varchar(300),point_sub_id integer ,amount  decimal(18,2),tpaid  decimal(18,2),pmember_id integer,pmember_ch_id varchar(100), totalm integer,date_paid date)";
-            $sql = "select CONCAT( surname, ' ', other_names) name, date_joined,id as memid,new_member_id ,img_path from  memberdetails where (new_member_id like '%$keyword%' or 
+            $sql = "select CONCAT( surname, ' ', other_names) name, date_joined,id as memid,new_member_id ,img_path from  memberdetails where  status_id =1 and (new_member_id like '%$keyword%' or 
  CONCAT( surname, ' ', other_names)  like '%$keyword%')";
 
             $db = DB::select($sql);
@@ -111,11 +117,25 @@ class OthercollectionsController extends General
         $col_type = $pdetails[6];
 
 
+        $custom_data = Churchgiven::where('id',$col_type)->first();
+        $contact = Memberdetail::where('id',$pdetails[0])->first();
+
+        $numbers = $this->explodearray('/', $contact->phone_numbers);
+        foreach($numbers as $item){
+
+            $arraycontact[]=$item;
+
+        }
+        $mess = 'An amount of GHC'.number_format($request->amount_paid,2).' has been paid for ' .$year_pledge.'  '.$custom_data->name.' contribution ';
+
+
+
 
         $this->create_payment_history(0, $pdetails[0], $request->amount_paid, $year_pledge,$pdetails[5], $col_type, $this->pointID);
 
         $resp='<p class="text-center text-success"><b>Transaction successful!!!.</b></p>';
 
+        $this->sendbulksms($arraycontact,'NewAbossEPC',$mess,false,'');
         return response()->json(['data'=>$resp]);
     }
 

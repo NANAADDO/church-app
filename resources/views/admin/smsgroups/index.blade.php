@@ -14,7 +14,9 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>Name</th><th></th>
+                                        <th>Name</th><th>Total Contact</th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -22,6 +24,7 @@
                                     <tr>
 
                                         <td>{{ $item->name }}</td>
+                                        <td>0</td>
                                        <td class="td-actions">
                                  @include('crud.down',['route'=>'admin/smsgroups','id'=>$item->id])
 
@@ -31,6 +34,7 @@
                                 </tbody>
                             </table>
                             <div class="pagination-wrapper"> {!! $data->appends(['search' => Request::get('search')])->render() !!} </div>
+
                         </div>
 
 @else

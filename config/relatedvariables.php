@@ -10,7 +10,8 @@ return [
     ],
 
     'ch_config'=>[
-        'start_year'=>2017
+        'start_year'=>2017,
+		'memberdeceased'=>3
 
     ],
 

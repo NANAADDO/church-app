@@ -61,7 +61,7 @@ class TransportController extends General
             session()->put('error','There were validation errors');
             return $this->validateRequest($request);
         }
-        $total = Member::get_total_member()  - 1;
+        $total = Member::get_total_member_transport();
          $data = $request->all();
         $data['expected_people']=$total;
         $data['expected_amount']=$total * $request->amount;

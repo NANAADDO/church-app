@@ -5,6 +5,8 @@ use App\Models\payment_history;
 use App\Traits\GeneralProcessTrait;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\GeneralVariables;
+use Spatie\Permission\Models\Role;
+
 class Payment {
 
 
@@ -30,11 +32,51 @@ else {
 return $val;
 }
 
+
+    public static function get_payment_total_based_collection_id_and_date($id,$date){
+        $Role =Roles::userRole(GeneralVariables::getuserid());
+        if($id==2) {
+            $in = [2,4];
+
+            if($Role==5 || $Role==6){
+                $val = payment_history::whereIn('collection_id', $in)->where('date_paid', $date)->where('payment_state','=',0)->sum('amount_paid');
+
+            }
+            else {
+                $val = payment_history::whereIn('collection_id', $in)->where('date_paid', $date)->where('payment_state','=',0)->where('user_id', GeneralVariables::getuserid())->sum('amount_paid');
+
+
+            }
+        }
+        else if($id==0){
+            if($Role==5 || $Role==6){
+                $val = payment_history::where('date_paid', $date)->where('payment_state','=',0)->sum('amount_paid');
+            }
+            else{
+                $val = payment_history::where('date_paid', $date)->where('payment_state','=',0)->where('user_id', GeneralVariables::getuserid())->sum('amount_paid');
+            }
+        }
+        else {
+           if($Role==5 || $Role==6){
+                $val = payment_history::where('collection_id', $id)->where('payment_state','=',0)->where('date_paid', $date)->sum('amount_paid');
+
+
+            }
+            else{
+                $val = payment_history::where('collection_id', $id)->where('payment_state','=',0)->where('date_paid', $date)->where('user_id', GeneralVariables::getuserid())->sum('amount_paid');
+
+            }
+        }
+
+        return $val;
+    }
+
+
     public static function get_daily_payment_details_by_user($id){
        $ids = Given::get_church_given_based_on_group($id);
 
 
-            $val = payment_history::whereIn('collection_id', $ids)->where('date_paid', GeneralVariables::currentdate())->where('user_id', GeneralVariables::getuserid())->get();
+            $val = payment_history::whereIn('collection_id', $ids)->where('payment_state','=',0)->where('date_paid', GeneralVariables::currentdate())->where('user_id', GeneralVariables::getuserid())->get();
 
 
 

@@ -11,11 +11,12 @@ use App\Hometown;
 use App\Locality;
 use App\Maritalstatus;
 use App\Marriagetype;
-use App\Model\Status;
+use App\Models\Status;
 use App\Models\collectiongroup;
 use App\Models\IDTypes;
 use App\Models\Messagetag;
 use App\Models\Months;
+use App\Models\NotificationTime;
 use App\Models\Paymentplantype;
 use App\Models\Questionoption;
 use App\Models\Textmessage;
@@ -37,6 +38,25 @@ class DBoptions {
 
     protected static $menu_table = 'parent_module';
 
+
+    public static function get_all_textMessages()
+    {
+
+        return self::dbstructure(Textmessage::class,'title','content');
+
+    }
+
+    public static function get_all_tags()
+    {
+
+        return self::dbstructure(Messagetag::class,'name','id');
+
+    }
+
+    public static function get_all_period()
+    {
+        return self::dbstructure(NotificationTime::class,'name','id');
+    }
 
     public  static function get_all_collection_based_groups_raw($value){
 
@@ -242,8 +262,13 @@ class DBoptions {
 
     }
     public  static function get_all_collection_based_groups($value){
+        if($value=='*'){
+            return self::dbstructure(Churchgiven::class, 'name', 'id');
+        }
+        else {
 
-        return self::dbstructure5(Churchgiven::class,'name','id','groups_id',$value);
+            return self::dbstructure5(Churchgiven::class, 'name', 'id', 'groups_id', $value);
+        }
     }
 
 

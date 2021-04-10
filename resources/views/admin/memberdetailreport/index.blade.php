@@ -29,6 +29,8 @@
 
                     {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['gender', 'false','4' ,"form-control","",DBSELOPTION::get_all_genders(),$errors,$read,' Member Gender?',null])!!}
                     {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['marital_status', 'false','5' ,"form-control","",DBSELOPTION::get_all_marital_status(),$errors,$read,' Member Marital status?',null])!!}
+                    {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['member_status', 'false','5' ,"form-control","",DBSELOPTION::get_all_status(),$errors,$read,' Member Status?',null])!!}
+
                     {!! HtmlEntities::get_dynamic_form_complete_collective_c3_input(['text','start_date','form-control','start','',$errors,'',$read,'Start Date Joined']) !!}
                     {!! HtmlEntities::get_dynamic_form_complete_collective_c3_input(['text','end_date','form-control','finish','',$errors,'',$read,'End Date Joined']) !!}
 
@@ -50,8 +52,10 @@
 
                         <thead>
                         <tr id="td_title">
+                            <th>#</th>
                             <th>Name</th>
                             <th>Member ID</th>
+                            <th>OLD Member ID</th>
                             <th>Phone #</th>
                             <th>Address</th>
                             <th>Country</th>
@@ -65,10 +69,12 @@
                         </thead>
                         <tbody id="td_body">
 
-                        @foreach($data as $item)
+                        @foreach($data as $key=>$item)
                         <tr>
+                            <td>{{ $item->id}}</td>
                             <td>{{ $item->surname.' '.$item->other_names}}</td>
                             <td>{{ $item->new_member_id }}</td>
+                            <td>{{ $item->old_member_id }}</td>
                             <td>{{ $item->phone_numbers }}</td>
                             <td>{{ $item->address }}</td>
                             <td>{{ $item->country->name}}</td>

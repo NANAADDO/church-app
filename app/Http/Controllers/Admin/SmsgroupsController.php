@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Models\Memberdetail;
 use App\Models\Smsgroup;
 use Illuminate\Http\Request;
 use App\Http\Controllers\General;
@@ -32,6 +33,8 @@ class SmsgroupsController extends General
         $keyword = $request->get('search');
         $perPage = 25;
 
+
+
         if (!empty($keyword)) {
             $data = Smsgroup::where('name', 'LIKE', "%$keyword%")
                 ->latest()->paginate($perPage);
@@ -42,6 +45,14 @@ class SmsgroupsController extends General
         return view('admin.smsgroups.index', compact('data'));
     }
 
+    public function create()
+    {
+        $contact = Memberdetail::select('surname','other_names','phone_numbers','id')->paginate(3);
+
+        $type = 'create';
+
+        return view($this->view_custom.$this->viewname.".".$type)->with(compact('contact'));
+    }
 
 
     }

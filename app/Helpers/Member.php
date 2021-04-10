@@ -11,7 +11,11 @@ class Member {
     protected static $branch_table = '';
 
 
+public static function get_total_member_transport() {
+	  $data = Memberdetail::where('status_id',1)->count();
 
+        return $data;
+    }
 
 
 

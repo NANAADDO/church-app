@@ -34,7 +34,7 @@
                   '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">' +
                   '<div class="form-group  "><input class="form-control form-control-user" id="" placeholder="" name="child_name[]" type="text"></div></div></div><div class="col-md-4" style="margin-bottom: 40px;"> <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><label name="Relationship Type" class="login2"> Relationship Type</label>\n' +
                   '                </div><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">' +
-                  '<div class="form-group  "><select class="form-control form-control-user" style="font-size: 1.0rem; border-radius:2px;" size="" id="" name="child_relationship_id[]">'+ data + '</select></div></div></div><div class="col-md-4" style="margin-bottom: 40px;">' +
+                  '<div class="form-group  "><select class="form-control form-control-user" style="font-size: 1.0rem;height:40px; border-radius:2px;" size="" id="" name="child_relationship_id[]">'+ data + '</select></div></div></div><div class="col-md-4" style="margin-bottom: 40px;">' +
                   '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><label name="Church ID IF Applicable" class="login2"> Church ID IF Applicable</label></div>' +
                   '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="form-group  "><input class="form-control form-control-user" id="" placeholder="" name="child_church_id[]" type="text"></div></div></div></div>');
 
@@ -64,7 +64,7 @@
 
               $(wrapper_r).append('<div class="row" style="margin-bottom:20px;" id="relation_' + r + '"> <div class="col-md-12 "><legend style="font-size: 14px; background-color:#555;color: white; max-width: 100px; padding: 7px; border-radius: 10px 10px 0px 0px;">RELATION ' + r + ' </legend>' +
                   '<p ><a class="btn btn-danger btn-user remove_relation" href="javascript:void(0);" role="button" id="' + r +'" >REMOVE RELATION ' + r + '</a></p></div>' + data + '<div class="col-md-4" style="margin-bottom: 40px;"><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><label name="Relation Locality" class="login2"> Relation Locality</label></div><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">\n' +
-                  '  <div class="form-group  "><select class="form-control other_specify idm form-control-user" style="font-size: 1.0rem; border-radius:2px;" size="" id="re_locality_' + r +'" name="relation_locality_id[]">' + idm +'</select></div></div></div><div id="re_locality_'+ r +'_show" style="margin-top: -100px; display: none;">' +
+                  '  <div class="form-group  "><select class="form-control other_specify idm form-control-user" style="font-size: 1.0rem;height:40px; border-radius:2px;" size="" id="re_locality_' + r +'" name="relation_locality_id[]">' + idm +'</select></div></div></div><div id="re_locality_'+ r +'_show" style="margin-top: -100px; display: none;">' +
                   ' <div class="form-group-inner"><div class="col-md-4" style="margin-bottom: 40px;"><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><label name="" class="login2"> </label></div>' +
                   '<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><div class="form-group  "><input class="form-control form-control-user" id="" placeholder="Specify Locality" name="relation_locality_others[]" type="text"></div>' +
                   '</div></div></div></div></div>');
@@ -189,6 +189,17 @@
       }
 
       })
+      $('body').on('change','#memberStatus',function (e) {
+
+          if($(this).val()==='3'){
+              $('#date_died_show').show('slow');
+
+          }
+          else{
+              $('#date_died_show').hide('fast');
+          }
+
+      })
 
       $('body').on('change','.other_quest',function (e) {
 
@@ -291,7 +302,17 @@ $(path_to_cal).html(0);
       var path_to_cal = $('#path_to_call');
       var search_to_reverse_receipt = $('.search_to_reverse_receipt');
 
+/*************************************DISPLAY CURRENT PAYMENT DETAILS ON DASHBOARD*******************/
 
+     $('#search_day_payment').click(function (e) {
+
+var formData = {
+     'dated' : $('.date_selected').val(),
+    '_token'    :  $('input[name=_token]').val()
+};
+
+         ajaxcalldynamic('post',formData,'payment_history_summary','#show_dynamic_date_payment')
+     });
 
 
       /*****************SHOW PAYMENT BY RECEIPT SEARCHED*****************************/
@@ -1021,7 +1042,8 @@ clear_payment_fields();
           ids = id.split('-');
 
           ident = ids[1]+'_'+ids[0];
-          $('#show_payee_info_hear').html($('#get_year_and_payee_info_'+ ids[1]).html());
+          $('#show_payee_info_hear').html($('#get_year_and_payee_info_'+ ids[0]).html());
+          $('#t_payee_name').html( $('#get_payee_name_'+ ids[1]).html());
           $('#stat_icon').html($('#stat_profile_img_' + ids[1]).html());
           ap = $('#amount_paid' + ident).text();
           $('#p_paid').val(ap);
@@ -1215,6 +1237,36 @@ function option_types(data,displayname,type){
           });
 
       }
+
+
+      function ajaxcalldynamic(Http_verb,formData,URLLocation,display_section){
+           console.log(formData);
+          $.ajax({
+              type        : Http_verb, // define the type of HTTP verb we want to use (POST for our form)
+              url         : BaseURL + '/' + URLLocation, // the url where we want to POST
+              data        : formData,
+              beforeSend: function() {
+
+                  $("#cover-spin").fadeIn('slow');
+              }
+          }).done(function(data) {
+              console.log(data);
+              $(display_section).html(data);
+
+
+              $("#cover-spin").fadeOut('slow');
+
+          }).fail(function(response) {
+
+              // log data to the console so we can see
+              console.log(response.responseText);
+              return false;
+
+          });
+
+      }
+
+
 
 
 

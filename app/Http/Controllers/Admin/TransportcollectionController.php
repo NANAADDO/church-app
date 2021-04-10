@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Models\Memberdetail;
 use App\Models\payment_history;
 use App\Models\Transport;
 use App\Models\Transportcollection;
 use App\Traits\PaymentHistoryTrait;
+use App\Traits\SMSTraits;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\General;
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 
 class TransportcollectionController extends General
 {
+    use SMSTraits;
     use PaymentHistoryTrait;
    protected $model = payment_history::class;
       protected $viewname = 'transportcollection';
@@ -51,7 +54,7 @@ class TransportcollectionController extends General
         pimgpath varchar(300),transid integer ,amount  decimal(18,2),tpaid  decimal(18,2),pmember_id integer, rmember_id integer,date_paid date)";
 
 
-            $sql = "select surname, date_joined,id as memid,new_member_id ,img_path from  memberdetails where (new_member_id like '%$keyword%' or 
+            $sql = "select CONCAT( surname, ' ', other_names) as surname, date_joined,id as memid,new_member_id ,img_path from  memberdetails where status_id =1 and  (new_member_id like '%$keyword%' or 
  CONCAT( surname, ' ', other_names)  like '%$keyword%')";
 
             $db = DB::select($sql);
@@ -62,7 +65,7 @@ class TransportcollectionController extends General
             foreach ($db as $row){
 
                 $unirec="INSERT INTO ".$tempname."(rmember_id,psurname,amount,rname,transid,rimgpath,pimgpath,pmember_id,tpaid,date_paid)
- select IFNULL(t1.member_id,'$row->memid') as pmid, IFNULL(t2.surname,'$row->surname') as surname ,t1.amount,t1.rname ,t1.trans_id,t1.rimg_path,IFNULL(t2.mimg_path,'$row->img_path') as mimg,IFNULL(t2.memid,'$row->memid') as mid,sum(IFNULL(t2.amount_paid,0)) as totalpaid,
+ select IFNULL(t1.member_id,'$row->memid') as pmid, '$row->surname' as surname ,t1.amount,t1.rname ,t1.trans_id,t1.rimg_path,IFNULL(t2.mimg_path,'$row->img_path') as mimg,IFNULL(t2.memid,'$row->memid') as mid,sum(IFNULL(t2.amount_paid,0)) as totalpaid,
 max(t2.date_paid) as date_paid  from ((select t.amount,t.id as trans_id,t.member_id,m.img_path as rimg_path,CONCAT( m.surname, ' ', m.other_names) rname from transports t join  memberdetails m on t.member_id = m.id 
 where t.date >='$row->date_joined' and t.txt_state_id = 2 ) as t1 left join
 (select  p.amount_paid,p.date_paid,m.img_path as mimg_path,m.surname,p.point_sub_id,IFNULL(p.member_id,'$row->memid') as memid from 
@@ -108,6 +111,21 @@ where t.date >='$row->date_joined' and t.txt_state_id = 2 ) as t1 left join
                 $this->create_payment_history(0,$request->member_id,$request->amount_paid,$this->currentyear(),$request->point_sub_id,$request->collection_id,$this->pointID);
 
                 $resp='<p class="text-center text-success"><b>Transaction successful!!!.</b></p>';
+
+
+
+                $custom_data = Transport::where('id',$request->point_sub_id)->first();
+                $contact = Memberdetail::where('id',$request->member_id)->first();
+
+                $numbers = $this->explodearray('/', $contact->phone_numbers);
+                foreach($numbers as $item){
+
+                    $arraycontact[]=$item;
+
+                }
+                $mess = 'An amount of GHC'.number_format($request->amount_paid,2).' has been paid for   '.$custom_data->description.' contribution ';
+                $this->sendbulksms($arraycontact,'NewAbossEPC',$mess,false,'');
+
             }
         }
         return response()->json(['data'=>$resp]);

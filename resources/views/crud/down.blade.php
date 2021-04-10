@@ -22,8 +22,16 @@
             <button type="submit" onclick="return confirm('Are you sure to delete this item?')" data-toggle="tooltip" title="" class="btn btn-link <btn-simple-primary" data-original-title="Delete data">
                 <i class="fa fa-times" style="font-size:16px;color:red;"></i>
             </button>
+                {!! Form::close() !!}
             @endif
-        {!! Form::close() !!}
+
+
+            @if($route =='admin/smsgroups')
+                <a href="" role="button" class="btn btn-xs  btn-primary"><i class="fa fa-user"></i>Manage group contact</a>
+            @endif
+            @if($route =='admin/users')
+                <a href="{{url('admin/user/resetpasword/'.$id)}}" role="button" class="btn btn-xs  btn-primary" onclick="return confirm('Are you sure you want to reset user password?')"><i class="fa fa-user-secret"></i>Reset Password</a>
+            @endif
 
     </div>
 

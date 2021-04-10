@@ -404,7 +404,7 @@ public static function get_label_name($name){
         $response.='<div class="form-group ';
         $response.= (@$errors->has($name) ? " has-error" : " " ).'">';
 
-        $response.= \Form::textarea(@$data[1],null,array('class'=> @$data[2].' form-control-user',( @$data[7]=='true' ?  'readonly'  :null ),'id'=>@$data[3],'placeholder'=>$placeholder ,'style'=>'border-radius:0px;')  );
+        $response.= \Form::textarea(@$data[1],@$data[9],array('class'=> @$data[2].' form-control-user',( @$data[7]=='true' ?  'readonly'  :null ),'id'=>@$data[3],'placeholder'=>$placeholder ,'style'=>'border-radius:0px;')  );
 
         if ($errors->has($name)){
 

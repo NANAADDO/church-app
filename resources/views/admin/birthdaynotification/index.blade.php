@@ -5,50 +5,70 @@
 <?php
         $right =  Permissions::confirm_user_permission('/admin/birthdaynotification');
         ?>
-        <div class="product-sales-chart shadow" style="margin-bottom: 5px; min-height: 300px;">
-            {!! Form::open(['url' => '/admin/birthdaynotification', 'class' => 'form-horizontal user', 'files' => true]) !!}
-
-            <div class="portlet-title">
-
-
-
-                            <div class="form-check text-center">
-                                <label class="form-check-label">
-                                    <input class="form-check-input notification" type="checkbox" value="1" name='state_id' {{(empty($data->state_id)?(old('state_id')==1? 'checked' : ''):($data->state_id==1?'checked' : ''))}}>
-                                    <span style="color:red;">Click to Enable Automatic Birthday Notification</span>
-                                </label>
-                            </div>
-                        </div>
-
+    <div class="product-sales-chart shadow" style="margin-bottom: 5px; min-height: 300px;">
+        <div class="portlet-title">
+            @csrf()
+            @include('crud.top',['routename'=>'admin/birthdaynotification','modulename'=>'BirthDay Notification'])
+            @if ($data->count())
                 <div class="row">
-                    <div class="col-md-8 col-md-offset-2">
-                        <p style="color:red; font-weight:bold;">NB*</p>
-                        <p style=" margin-bottom:50px;"> Enabling Automatic Birthday Notification  will notify all your contacts who are celebrating their birthdays, by sending them a customized
-                            message selected from your account.
+                <div class="col-md-6" style="margin-bottom: 20px;">
+                    <div class="col-md-12">
+                        <section style="margin-bottom:30px; ">
+                            {!!	Form::select('MessageID',DBSELOPTION::get_all_textMessages(),null,array('class'=>'form-control', 'id'=>'messagepop','placeholder'=>'Select Message'  )) !!}
+                        </section>
+                        <p style="float:left; width:auto;">No of characters : <span id="display_count" style=" color:red;">0</span></p>
+                        <p style="float:right; width:auto;">SMS Used : <span id="usedsms" style=" color:red;">0</span></p>
                     </div>
+                    {!! Form::hidden('sms_qty',null, array('id'=>'smscount','class' => 'form-control') ) !!}
+                    {!! Form::hidden('total_characters',null, array('id'=>'characters','class' => 'form-control') ) !!}
+
+                    <textarea class="form-control form-control-user" id="charactno" placeholder="" style="border-radius:0px;" name="content" cols="50" rows="3"></textarea>
+
+                </div>
+                <div class="col-md-6" style="margin-bottom: 20px;">
+                    <div class="col-md-12" style="">
+                        {!!	Form::select('SenderTagID',DBSELOPTION::get_all_tags(),null,array('class'=>'form-control','id'=>'sendtagname','placeholder'=>'Select a SenderTag Name'  )) !!}
+                    </div>
+
+                </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Member ID</th>
+                            <th>BirthDay</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($data as $item)
+                            <tr>
+                                <td>{{ $item->other_names.' '.$item->surname }}</td>
+                                <td>{{ $item->new_member_id }}</td>
+                                <td>{{ \App\Helpers\GeneralVariables::convertdateToWords($item->date_of_birth) }}</td>
+                                <td class="td-actions">
+                                    @include('crud.down',['route'=>'admin/messagetag','id'=>$item->id])
+
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    <div class="pagination-wrapper"> {!! $data->appends(['search' => Request::get('search')])->render() !!} </div>
                 </div>
 
+            @else
+                <p class="text-danger" style="padding: 20px;">There are no records</p>
+            @endif
 
-                    <div class="notification_setting" style="display: none;">
-                                {!! HtmlEntities::get_dynamic_form_complete_select_collective(['tag_id', 'false','' ,"form-control","",DBSELOPTION::get_all_sms_tag(),$errors,false,'Tag ID',null])!!}
-
-
-                                {!! HtmlEntities::get_dynamic_form_complete_select_collective(['message_id', 'false','messagepoped' ,"form-control","",DBSELOPTION::get_all_message_text(),$errors,false,'Message ID',null])!!}
-
-
-                            <p  style="clear: both;"><span><b style="color:red;">Message Selected Preview : </b></span><span class="display-selected_text"></span></p>
-
-                            @include('crud.button',['formMode'=>'Submit','url'=>'/home','urledit'=>'#'])
-                    </div>
-
-                            {!!Form::close()!!}
-                    </div>
+        </div>
+    </div>
+    </div>
             </div>
 
-    @foreach(DBSELOPTION::get_all_message_content() as $row)
-        <p style="display:none;" id="message-{{$row->id}}">{{$row->content}}</p>
 
-    @endforeach
+
 
 
 @endsection

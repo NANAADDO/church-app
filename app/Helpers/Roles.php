@@ -73,12 +73,20 @@ class Roles {
        return self::get_all_roles()->pluck('name','id');
 
     }
-
-    public static function userrole()
+    public static function userRole($id)
     {
+        $res = DB::table('role_user')->where('user_id',$id)->get();
 
+        if(!empty($res)){
 
+           return  $res[0]->role_id;
+
+        }
+        else{
+           return 0;
+        }
 
     }
+
 
 }

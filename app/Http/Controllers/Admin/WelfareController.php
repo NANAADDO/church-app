@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Churchgiven;
 use App\Helpers\Given;
 use App\Helpers\ProcessFunctions;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Models\Memberdetail;
 use App\Models\payment_history;
 use App\Models\Welfare;
-use App\Traits\GeneralProcessTrait;
 use App\Traits\GeneralVariables;
 use App\Traits\PaymentHistoryTrait;
+use App\Traits\SMSTraits;
 use Illuminate\Http\Request;
 use App\Http\Controllers\General;
 use Illuminate\Support\Arr;
@@ -19,9 +21,10 @@ use Illuminate\Support\Facades\DB;
 
 class WelfareController extends General
 {
-   
+     use SMSTraits;
     use GeneralVariables;
     use PaymentHistoryTrait;
+
 
    protected $model = payment_history::class;
       protected $viewname = 'welfare';
@@ -60,11 +63,11 @@ class WelfareController extends General
             $table = "CREATE TEMPORARY TABLE IF NOT EXISTS ".$tempname." (rname varchar(100),ryear year,date_joined date,mleft integer,
         pimgpath varchar(300),point_sub_id integer ,amount  decimal(18,2),tpaid  decimal(18,2),pmember_id integer,pmember_ch_id varchar(100), totalm integer,date_paid date)";
             if($type==5) {
-                $sql = "select CONCAT( surname, ' ', other_names) name, date_joined_welfare as date_joined ,id as memid,new_member_id ,img_path from  memberdetails where " . $include_welfare . "  (new_member_id like '%$keyword%' or 
+                $sql = "select CONCAT( surname, ' ', other_names) name, date_joined_welfare as date_joined ,id as memid,new_member_id ,img_path from  memberdetails where  status_id = 1 and " . $include_welfare . "  (new_member_id like '%$keyword%' or 
  CONCAT( surname, ' ', other_names)  like '%$keyword%')  ";
             }
             else{
-                $sql = "select CONCAT( surname, ' ', other_names) name, date_joined ,id as memid,new_member_id ,img_path from  memberdetails where " . $include_welfare . "  (new_member_id like '%$keyword%' or 
+                $sql = "select CONCAT( surname, ' ', other_names) name, date_joined ,id as memid,new_member_id ,img_path from  memberdetails where  status_id =1 and " . $include_welfare . "  (new_member_id like '%$keyword%' or 
  CONCAT( surname, ' ', other_names)  like '%$keyword%')  ";
             }
             $db = DB::select($sql);
@@ -179,17 +182,39 @@ p.point_sub_id,p.amount_paid, p.year,p.month_paid from months m left join paymen
         $year_joined = $this->convert_date_to_year($pdetails[4]);
         $year_pledge = $pdetails[2];
         $col_type = $pdetails[6];
+
+        $custom_data = Churchgiven::where('id',$col_type)->first();
+        $contact = Memberdetail::where('id',$pdetails[0])->first();
+
+        $numbers = $this->explodearray('/', $contact->phone_numbers);
+        foreach($numbers as $item){
+
+            $arraycontact[]=$item;
+
+        }
 if($col_type==5) {
     $allm = $this->implodearray($request->m_selected);
     foreach ($this->explodearray(',', $allm) as $mont) {
+        $month[] =$this->getmonthname($mont);
         $this->create_payment_history($mont, $pdetails[0], $pdetails[1], $year_pledge,$pdetails[5],  $col_type,$this->pointID);
     }
+    $mess = 'An amount of GHC'.number_format($request->amount_paid,2).' has been paid for '.$this->implodearray($month). ' ' .$year_pledge.' '.$custom_data->name.' contribution ';
+
 }
 else{
 
    $this->create_payment_history(0, $pdetails[0], $request->amount_paid, $year_pledge,$pdetails[5],  $col_type,$this->pointID);
-    }
+    $mess = 'An amount of GHC'.number_format($request->amount_paid,2).' has been paid for ' .$year_pledge.' '.$custom_data->name.' contribution ';
+
+}
         $resp='<p class="text-center text-success"><b>Transaction successful!!!.</b></p>';
+
+
+
+
+
+        $this->sendbulksms($arraycontact,'NewAbossEPC',$mess,false,'');
+
 
         return response()->json(['data'=>$resp]);
     }

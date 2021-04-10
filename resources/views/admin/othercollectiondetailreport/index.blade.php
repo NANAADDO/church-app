@@ -31,7 +31,7 @@
                                     select option.. </option>
 
                                 @foreach(DBSELOPTION::get_all_memberID() as $dat )
-                                    <option value="{{$dat->id}}" >{{$dat->surname.' '. $dat->other_names.'['.$dat->new_member_id.']'}}</option>
+                                    <option value="{{$dat->id}}_{{$dat->date_joined}}_{{$dat->does_member_want_to_join_welfare}}_{{$dat->date_joined_welfare}}" >{{$dat->surname.' '. $dat->other_names.'['.$dat->new_member_id.']'}}</option>
 
 
 
@@ -42,11 +42,10 @@
                 </div>
                 {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['type', 'false','type_collection' ,"form-control","",DBSELOPTION::get_all_collection_based_groups(5),$errors,$read,'  Other Collection Type?',null])!!}
 
-                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['year_paid', 'false','3' ,"form-control","",DBSELOPTION::get_all_years(),$errors,$read,'  By Year ?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['year_paid', 'false','3' ,"form-control","",DBSELOPTION::get_all_years(),$errors,$read,'  Start Year ?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['end_year', 'false','3' ,"form-control","",DBSELOPTION::get_all_years(),$errors,$read,'   End Year?',null])!!}
 
-                {!! HtmlEntities::get_dynamic_form_complete_collective_c3_input(['text','start_date','form-control','start','',$errors,'',$read,'Start Date ']) !!}
-                {!! HtmlEntities::get_dynamic_form_complete_collective_c3_input(['text','end_date','form-control','finish','',$errors,'',$read,'End Date']) !!}
-                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['fetch_type', 'false','19' ,"form-control","",['1'=>'fully paid','2'=>'committed','3'=>'zero payment'],$errors,$read,' Sort By?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['fetch_type', 'false','19' ,"form-control","",['1'=>'None paid','2'=>'paid fully','3'=>'group by year','4'=>'group by year range'],$errors,$read,' Filter By?',null])!!}
 
 
                 <div>

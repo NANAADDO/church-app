@@ -33,6 +33,61 @@ class ProcessFunctions {
 
     }
 
+    public static function get_month_to_begin_collection_calculation_from_date_died($m,$d){
+        $mleft = $m;
+        if($mleft==0){
+
+            if($d > 15){
+                $mmonth = 0;
+            }
+            else{
+
+                $mmonth = 0;
+            }
+        }
+        else{
+
+            if($d > 15){
+                $mmonth = $mleft;
+            }
+            else{
+
+                $mmonth = $mleft + 0;
+            }
+        }
+
+        return $mmonth;
+
+    }
+
+
+    public static function get_month_to_joined_church_to_start_contribution($m,$d){
+        $mleft =$m;
+        if($mleft==12){
+
+            if($d > 15){
+                $mmonth = 0;
+            }
+            else{
+
+                $mmonth = $m;
+            }
+        }
+        else{
+
+            if($d > 15){
+                $mmonth = $mleft + 1;
+            }
+            else{
+
+                $mmonth = $mleft;
+            }
+        }
+
+        return $mmonth;
+
+    }
+
 
     public static function get_month_to_begin_collection_calculation_from_date_joined_on_show($m,$d){
 

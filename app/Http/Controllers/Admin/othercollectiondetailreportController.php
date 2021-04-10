@@ -51,6 +51,7 @@ class othercollectiondetailreportController extends General
 
     public function store(Request $request)
     {
+        /*
         if (\Request::ajax()) {
             $eyear = $this->currentyear();
             $ids = $this->implodearray(Given::get_church_given_based_on_group(5));
@@ -105,8 +106,8 @@ class othercollectiondetailreportController extends General
 
                     $unirec = "INSERT INTO " . $tempname . "(new_member_id,tamount,tpaid,name,date_paid,tbal,ryear,colname)
  select t1.new_member_id,t1.amount,sum(IFNULL(t1.amount_paid,0)) as totalpaid, '$row->rname' as rname,
-max(t1.date_paid) as date_paid, t1.amount - sum(IFNULL(t1.amount_paid,0)) as bal,t1.year,t1.colname  from ((select pa.new_member_id,cg.name as colname,c.collection_id,c.amount,c.year,p.date_paid,p.amount_paid from  churchcustompayments c LEFT JOIN payment_histories p on c.id = p.point_sub_id 
-   and p.payment_state=? and p.year = ? and p.member_id = ? and FIND_IN_SET (p.collection_id,?) inner join memberdetails pa  on ? = pa.id inner join churchgivens cg on c.collection_id = cg.id where c.year = ? " . $others_s . " 
+max(t1.date_paid) as date_paid, t1.amount - sum(IFNULL(t1.amount_paid,0)) as bal,t1.year,t1.colname  from ((select pa.new_member_id,cg.name as colname,c.collection_id,c.amount,c.year,p.date_paid,p.amount_paid from  churchcustompayments c LEFT JOIN payment_histories p on c.id = p.point_sub_id
+   and p.payment_state=? and p.year = ? and p.member_id = ? and FIND_IN_SET (p.collection_id,?) inner join memberdetails pa  on ? = pa.id inner join churchgivens cg on c.collection_id = cg.id where c.year = ? " . $others_s . "
 ) as t1) group by t1.colname,t1.new_member_id,t1.year";
                     DB::select($unirec, [0,$j,$row->id,$colset, $row->id,$j]);
 
@@ -131,6 +132,13 @@ max(t1.date_paid) as date_paid, t1.amount - sum(IFNULL(t1.amount_paid,0)) as bal
             return DataTables::of($data)->make(true);
 
         }
+
+        */
+
+        $tableName='othercollection';
+
+        $data=  $this->reportLogicYearly($request, $request->type,$tableName,1);
+        return DataTables::of($data)->make(true);
     }
 
 

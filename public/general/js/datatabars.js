@@ -1,5 +1,6 @@
   $(document).ready(function () {
-      var getcoltype = $('#get_col_type').text();
+      alert('gg');
+      var getcoltype = parseInt($('#get_col_type').text());
     var table =  $('#example').DataTable(
           {
               dom: 'lBfrtip',
@@ -44,7 +45,7 @@
                   },
                   'colvis'
               ],
-              "lengthMenu": [ [10, 25, 50,100,150,200, -1], [10, 25, 50,100,150,200, "All"] ],
+              "lengthMenu": [ [25, 50,100,150,200, -1], [25, 50,100,150,200, "All"] ],
               responsive: true
           });
 
@@ -52,12 +53,26 @@
 
     /*****************SEARCH MEMBER DETAILS BASED ON FILTER*******************/
 
+    let startYear = $('select[name=year_paid]');
+      let endYear = $('select[name=end_year]');
       $('#search_form').on('click', function(e) {
 
+          stYr = $(startYear).val();
+          enYr =  $(endYear).val();
+
+          if( stYr !=="" &&  enYr !==""){
+             if(parseInt(enYr) <= parseInt(stYr)){
+               alert('Opps!! End Year Must Be Greater than the Start Year.')
+                 $(endYear).focus();
+               return false;
+             }
+          }
 
           $('#td_title').html('');
           $('#td_body').html('');
           var json_data =reportcol(getcoltype);
+
+          //alert(getcoltype);
 
           var i;
 
@@ -74,6 +89,8 @@
 
 
           purl = $('#get_searcch_endpoint').text();
+          //alert(purl);
+         //console.log($('#type_collection').val());
 
           fetch_data(true,purl);
 
@@ -85,9 +102,11 @@
 /************************************DATATABLE'S REUSABLE FUNCTIONS HERE**********************************/
 
 function reportcol(type){
-    var res
+    var res;
+    let fetchValue = parseInt($('select[name=fetch_type]').val());
+    let fetchID = 3;
 
-    if(type==0) {
+    if(type===0) {
 
         res = [
             {data: "name", title: "Name"},
@@ -106,7 +125,7 @@ function reportcol(type){
 
     }
 
-    if(type==1) {
+    if(type===1) {
 
         res = [
             {data: "rname", title: "Name"},
@@ -120,7 +139,7 @@ function reportcol(type){
 
     }
 
-    if(type==2 || type==3) {
+    if(type===2 || type===3) {
 
 
         if($('#type_collection').val()==6){
@@ -136,20 +155,24 @@ function reportcol(type){
 
         }
         else {
+              if(fetchValue===fetchID) {
+                  res =reusableReportColum(1);
+              }
 
-            res = [
-                {data: "name", title: "Name"},
-                {data: "member_id", title: "Member ID"},
-                {data: "mname", title: "Month"},
-                {data: "tpaid", title: "Amount Paid"},
-                {data: "ryear", title: "Year"},
-                {data: "date_paid", title: "Date Paid"}
-            ];
-
+              else {
+                  res = [
+                      {data: "name", title: "Name"},
+                      {data: "member_id", title: "Member ID"},
+                      {data: "mname", title: "Month"},
+                      {data: "tpaid", title: "Amount Paid"},
+                      {data: "ryear", title: "Year"},
+                      {data: "date_paid", title: "Date Paid"}
+                  ];
+              }
         }
     }
 
-    if(type==4) {
+    if(type===4) {
             res =  [
                 {data: "name", title: "Name"},
                 {data: "new_member_id", title: "Member ID"},
@@ -164,6 +187,52 @@ function reportcol(type){
         }
 
 
+    if(type===5) {
+        if(fetchValue===fetchID){
+
+            res =reusableReportColum(1);
+
+        }
+        else {
+
+            res = [
+                {data: "name", title: "Name"},
+                {data: "member_id", title: "Member ID"},
+                {data: "tpaid", title: "Amount Paid"},
+                {data: "ryear", title: "Year"},
+                {data: "date_paid", title: "Date Paid"}
+            ];
+
+        }
+
+    }
+
+    if(type===6) {
+
+        res = [
+            {data: "name", title: "Name"},
+            {data: "member_id", title: "Member ID"},
+            {data: "col_type", title: "Collection Type"},
+            {data: "total_month", title: "Total Month"},
+            {data: "totalmonthpaid", title: "Total Month Paid"},
+            {data: "amountpaying", title: "Amount Paying"},
+            {data: "totalpaid", title: "Total Paid"},
+            {data: "ryear", title: "Year"}
+        ];
+    }
+    if(type===7) {
+        res = [
+            {data: "name", title: "Name"},
+            {data: "new_member_id", title: "Member ID"},
+            {data: "old_member_id", title: "OLD Member ID"},
+            {data: "coltype", title: "Collection Type"},
+            {data: "amount", title: "Amount"},
+            {data: "dpaid", title: "Date Paid"},
+        ];
+
+
+
+    }
 
 
     return res
@@ -179,12 +248,16 @@ function fetch_data(fetchstate,endpoint) {
                 url: BaseURL + endpoint,
                 type: "post",
                 data: function (d) {
+                    d.payment_date = $('input[name=payment_date]').val();
+                    d.col_type = $('select[name=col_type]').val();
                     d.start_date = $('input[name=start_date]').val();
                     d.end_date = $('input[name=end_date]').val();
+                    d.end_year = $('select[name=end_year]').val();
                     d.welfare_state = $('select[name=welfare_state]').val();
                     d.gender = $('select[name=gender]').val();
                     d.by_age = $('input[name=by_age]').val();
                     d.marital_status = $('select[name=marital_status]').val();
+                    d.member_status = $('select[name=member_status]').val();
                     d._token = $('input[name=_token]').val();
                     d.religious = get_multi_value('religious');
                     d.profession = get_multi_value('profession');
@@ -249,7 +322,7 @@ function fetch_data(fetchstate,endpoint) {
                 },
                 'colvis'
             ],
-            "lengthMenu": [ [10, 25, 50,100,150,200, -1], [10, 25, 50,100,150,200, "All"] ],
+            "lengthMenu": [ [25, 50,100,150,200, -1], [25, 50,100,150,200, "All"] ],
             responsive: true
         });
 }
@@ -264,27 +337,54 @@ function get_multi_value(name){
       return val1;
   }
 
+  function reusableReportColum(id){
+    let colRes;
+    if(id===1){
+
+       colRes =  [
+            {data: "name", title: "Name"},
+            {data: "member_id", title: "Member ID"},
+            {data: "totalpaidmonth", title: "Total Paid Month"},
+            {data: "totalmonth", title: "Total Month"},
+            {data: "totalpaid", title: "Amount Paid"},
+            {data: "ryear", title: "Year"}
+        ];
+
+    }
+
+    return colRes;
+  }
 
   function get_title(type){
 
 
-     if(type==0) {
-         return 'Church member Report';
+     if(type===0) {
+         return 'Membership Report';
      }
 
-      if(type==1) {
+      if(type===1) {
           return 'Member Transport Report';
       }
-      if(type==2) {
+      if(type===2) {
           return 'Member Tithe Report';
       }
-      if(type==3) {
+      if(type===3) {
 
           return 'Member Welfare' +  $('#type_collection').find('option:selected').text() + ' Report';
       }
-      if(type==4) {
+      if(type===4) {
 
           return 'Member ' +  $('#type_collection').find('option:selected').text() + ' Report';
+      }
+
+      if(type===5) {
+
+          return 'Member Pledge Report';
+      }
+
+      if(type===6) {
+
+          return 'Member Debt  Report';
       }
   }
 

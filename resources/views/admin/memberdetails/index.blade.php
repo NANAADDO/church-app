@@ -10,18 +10,20 @@
                 @csrf()
                            @include('crud.top',['routename'=>'admin/memberdetails','modulename'=>'Member Profile'])
   @if ($data->count())
+      @csrf
                         <div class="table-responsive">
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>Name</th><th>Member ID</th><th>Baptised</th><th>Convert</th><th>Confirmed</th><th>Communicant</th><th></th>
+                                        <th>Name</th><th>Church ID</th><th>Baptised</th><th>Convert</th><th>Confirmed</th><th>Communicant</th><th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($data as $item)
                                     <tr>
 
-                                        <td>{{ $item->surname." ".$item->other_names }}</td><td>{{ $item->new_member_id }}</td>
+                                        <td>{{ $item->surname." ".$item->other_names }}</td>
+                                        <td>{{ $item->new_member_id }}</td>
                                         <td><?php echo  \App\Helpers\Member::get_state($item->Religious->are_you_baptised);?></td>
                                         <td><?php echo  \App\Helpers\Member::get_state($item->Religious->are_you_a_convert);?></td>
                                         <td><?php echo  \App\Helpers\Member::get_state($item->Religious->have_you_been_confirm);?></td>

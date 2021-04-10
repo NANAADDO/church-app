@@ -23,6 +23,15 @@ class GeneralVariables {
         return $tdate;
     }
 
+    public static function currentDateMonth(){
+        $carbon_today = \Carbon\Carbon::now();
+        $carbon_today->toDateString(); // same as ->format('Y-m-d')
+        $month = $carbon_today->format('m');
+
+        return $month;
+    }
+
+
     public static  function currentyear(){
         $carbon_today = \Carbon\Carbon::now();
         $carbon_today->toDateString(); // same as ->format('Y-m-d')
@@ -31,6 +40,11 @@ class GeneralVariables {
         return $tdate;
     }
 
+    public static  function convertdateToWords($date){
+       return  date("M jS, Y", strtotime($date));
+
+
+    }
 
     public static function getuserid()
     {

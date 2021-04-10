@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Churchgiven;
 use App\Helpers\ProcessFunctions;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Models\Membercustompayment;
+use App\Models\Memberdetail;
 use App\Models\payment_history;
 use App\Models\Tithe;
 use App\Traits\PaymentHistoryTrait;
+use App\Traits\SMSTraits;
 use Illuminate\Http\Request;
 use App\Http\Controllers\General;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 class TithesController extends General
 {
     use PaymentHistoryTrait;
+    use SMSTraits;
    protected $model = payment_history::class;
       protected $viewname = 'tithes';
       protected $path_custom = 'admin/' ;
@@ -47,7 +51,7 @@ class TithesController extends General
 
             $table = "CREATE TEMPORARY TABLE IF NOT EXISTS ".$tempname." (rname varchar(100),ryear year,date_joined date,mleft integer,
         pimgpath varchar(300),point_sub_id integer ,amount  decimal(18,2),tpaid  decimal(18,2),pmember_id integer,pmember_ch_id varchar(100), totalm integer,date_paid date)";
-            $sql = "select CONCAT( surname, ' ', other_names) name, date_joined,id as memid,new_member_id ,img_path from  memberdetails where (new_member_id like '%$keyword%' or 
+            $sql = "select CONCAT( surname, ' ', other_names) name, date_joined,id as memid,new_member_id ,img_path from  memberdetails where status_id =1 and (new_member_id like '%$keyword%' or 
  CONCAT( surname, ' ', other_names)  like '%$keyword%')";
 
             $db = DB::select($sql);
@@ -59,7 +63,7 @@ class TithesController extends General
             $eyear = $this->currentyear();
             foreach ($db as $row){
                 $myear = $this->convert_date_to_year($row->date_joined);
-                ( $myear<= 2017 ? $syear = 2017 : $syear = $myear);
+                ( $myear<= 2017 ? $syear = 2019 : $syear = $myear);
                 for($j=$syear; $j<=$eyear;$j++){
                     if ($myear == $j) {
                         $splitdate = $this->explodearray('-',$row->date_joined);
@@ -130,6 +134,7 @@ p.point_sub_id,p.amount_paid, p.year,p.month_paid from months m left join paymen
 
     public function store(Request $request)
     {
+        $month = [];
         $newpledgeamount = $request->defined_amount;
 
         $pdetails = explode('_',$request->p_details);
@@ -160,6 +165,8 @@ p.point_sub_id,p.amount_paid, p.year,p.month_paid from months m left join paymen
                     $mod = Membercustompayment::create($data);
                     $pledgeID = $mod->id;
                     foreach($this->explodearray(',',$allm) as $mont) {
+                        $month[] =$this->getmonthname($mont);
+
                         $this->create_payment_history($mont, $pdetails[0], $newpledgeamount, $year_pledge, $pledgeID, $this->titheID, $this->titheID);
                     }
                     $resp='<p class="text-center text-success"><b>Transaction successful!!!.</b></p>';
@@ -168,6 +175,7 @@ p.point_sub_id,p.amount_paid, p.year,p.month_paid from months m left join paymen
             }
             else{
                 foreach($this->explodearray(',',$allm) as $mont) {
+                    $month[] =$this->getmonthname($mont);
                     $this->create_payment_history($mont, $pdetails[0], $request->amount_paid / count($this->explodearray(',', $allm)), $year_pledge, 0, $this->titheID,$this->titheID);
                 }
                 $resp='<p class="text-center text-success"><b>Transaction successful!!!.</b></p>';
@@ -177,6 +185,7 @@ p.point_sub_id,p.amount_paid, p.year,p.month_paid from months m left join paymen
 
             if($pdetails[1]> 0){
                 foreach($this->explodearray(',',$allm) as $mont) {
+                    $month[] =$this->getmonthname($mont);
                     $this->create_payment_history($mont, $pdetails[0], $pdetails[1] / $clause, $year_pledge, $pdetails[5], $this->titheID, $this->titheID);
                 }
                 $resp='<p class="text-center text-success"><b>Transaction successful!!!.</b></p>';
@@ -184,13 +193,32 @@ p.point_sub_id,p.amount_paid, p.year,p.month_paid from months m left join paymen
 
             else{
                 foreach($this->explodearray(',',$allm) as $mont) {
+                    $month[] =$this->getmonthname($mont);
 
                     $this->create_payment_history($mont, $pdetails[0], $request->amount_paid / count($this->explodearray(',', $allm)), $year_pledge, 0, $this->titheID,$this->titheID);
                 }
                 $resp='<p class="text-center text-success"><b>Transaction successful!!!.</b></p>';
+
+
+
             }
 
+
+
         }
+
+        $custom_data = Churchgiven::where('id',$this->titheID)->first();
+        $contact = Memberdetail::where('id',$pdetails[0])->first();
+
+        $numbers = $this->explodearray('/', $contact->phone_numbers);
+        foreach($numbers as $item){
+
+            $arraycontact[]=$item;
+
+        }
+        $mess = 'An amount of GHC'.number_format($request->amount_paid,2).' has been paid for '.$this->implodearray($month). ' ' .$year_pledge.' '.$custom_data->name.' contribution ';
+        $this->sendbulksms($arraycontact,'NewAbossEPC',$mess,false,'');
+
 
 
         return response()->json(['data'=>$resp]);

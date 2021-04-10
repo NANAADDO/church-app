@@ -1,5 +1,6 @@
 
                    <?PHP
+                       //  qdd($data);
                    $qoption = DBSELOPTION::get_all_options();
                    $block = 'style="display: block;"';
                    $none = 'style="display: none;"';
@@ -26,7 +27,10 @@
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="review-content-section">
                                             <div id="dropzone1" class="pro-ad addcoursepro">
-                                                {!! HtmlEntities::get_dynamic_form_complete_select_collective(['status_id', 'false','' ,"form-control","",DBSELOPTION::get_all_status(),$errors,$read,'Member Status '.$re,null])!!}
+                                                {!! HtmlEntities::get_dynamic_form_complete_select_collective(['status_id', 'false','memberStatus' ,"form-control","",DBSELOPTION::get_all_status(),$errors,$read,'Member Status '.$re,null])!!}
+                                                <div id="date_died_show" style="display: {{(old('status_id') ==3 ?  'block;':'none;')}}">
+                                                    {!! HtmlEntities::get_dynamic_form_complete_collective_input(['text','date_died','form-control','dated5','',$errors,'Date Died',$read,'']) !!}
+                                                </div>
 
                                                 {!! HtmlEntities::get_dynamic_form_complete_collective_input(['text','surname','form-control','','',$errors,'',$read,'Surname '.$re]) !!}
 
@@ -268,7 +272,7 @@
 
                                                                 <section id="sec_relation">
                                                                     {!! HtmlEntities::get_dynamic_form_complete_collective_c4_input(['text','relation_name[]','form-control','','',$errors,'',$read,'Relation Name '.$re,(!empty(@$data->relatives)?@$data->relatives[0]->name:old('relation_name')[0])]) !!}
-                                                                    {!! HtmlEntities::get_dynamic_form_complete_select_c4_case(['relation_relationship_id[]', 'false','' ,"form-control","",DBSELOPTION::get_dynamic_relationship(0,[22]),$errors,$read,'Relationship Type '.$re,(!empty(@$data->relatives)?@$data->relatives[0]->relationship_id:old('relation_relationship_id')[0])])!!}
+                                                                    {!! HtmlEntities::get_dynamic_form_complete_select_c4_case(['relation_relationship_id[]', 'false','' ,"form-control","",DBSELOPTION::get_dynamic_relationship(0,[22,15,16]),$errors,$read,'Relationship Type '.$re,(!empty(@$data->relatives)?@$data->relatives[0]->relationship_id:old('relation_relationship_id')[0])])!!}
 
                                                                     {!! HtmlEntities::get_dynamic_form_complete_collective_c4_input(['text','relation_address[]','form-control','','',$errors,'',$read,'Relation Address ',(!empty(@$data->relatives)?@$data->relatives[0]->address:old('relation_address')[0])]) !!}
 
@@ -313,7 +317,7 @@
                                                                             <div class="row" style="margin-bottom:20px;" id="relation_{{$key}}"> <div class="col-md-12 "><legend style="font-size: 14px; background-color:#555;color: white; max-width: 100px; padding: 7px; border-radius: 10px 10px 0px 0px;">RELATION <?PHP echo  $key + 1; ?> </legend>
                                                                                     <p ><a class="btn btn-danger btn-user remove_relation" href="javascript:void(0);" role="button" id="{{$key}}" >REMOVE RELATION <?PHP echo $key + 1; ?> </a></p>
                                                                                     {!! HtmlEntities::get_dynamic_form_complete_collective_c4_input(['text','relation_name[]','form-control','','',$errors,'',$read,'Relation Name',(!empty($data)?$data->relatives[$key]->name:old('relation_name')[$key])]) !!}
-                                                                                    {!! HtmlEntities::get_dynamic_form_complete_select_c4_case(['relation_relationship_id[]', 'false','' ,"form-control","",DBSELOPTION::get_dynamic_relationship(0,[22]),$errors,$read,'Relationship Type',(!empty(@$data->relatives)?@$data->relatives[$key]->relationship_id:old('relation_relationship_id')[$key])])!!}
+                                                                                    {!! HtmlEntities::get_dynamic_form_complete_select_c4_case(['relation_relationship_id[]', 'false','' ,"form-control","",DBSELOPTION::get_dynamic_relationship(0,[22,15,16]),$errors,$read,'Relationship Type',(!empty(@$data->relatives)?@$data->relatives[$key]->relationship_id:old('relation_relationship_id')[$key])])!!}
 
                                                                                     {!! HtmlEntities::get_dynamic_form_complete_collective_c4_input(['text','relation_address[]','form-control','','',$errors,'',$read,'Relation Address',(!empty(@$data->relatives)?@$data->relatives[$key]->address:old('relation_address')[$key])]) !!}
 
@@ -529,7 +533,7 @@
 
                                                                 {!! HtmlEntities::get_dynamic_form_complete_collective_input(['text','confirmation_place','form-control','','',$errors,'',$read,'Confirmation Place '.$re,(!empty($data->religious)?$data->religious->confirmation_place:null)]) !!}
 
-                                                                {!! HtmlEntities::get_dynamic_form_complete_collective_input(['date','confirmation_date ','form-control','dated3','',$errors,'',$read,'Confirmation Date  '.$df,(!empty($data->religious)?$data->religious->confirmation_date:null)]) !!}
+                                                                {!! HtmlEntities::get_dynamic_form_complete_collective_input(['date','confirmation_date','form-control','dated3','',$errors,'',$read,'Confirmation Date  '.$df,(!empty($data->religious)?$data->religious->confirmation_date:null)]) !!}
 
                                                                 {!! HtmlEntities::get_dynamic_form_complete_collective_input(['text','confirmation_rev_minister','form-control','','',$errors,'',$read,'Confirmation Rev. Minister ',(!empty($data->religious)?$data->religious->confirmation_rev_minister:null)]) !!}
                                                             </div>

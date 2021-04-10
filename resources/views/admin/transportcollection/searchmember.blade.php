@@ -1,4 +1,4 @@
-
+/
 @if (!empty($data) && $data->count())
     @foreach($data  as $row)
 
@@ -6,7 +6,7 @@
             <div class="hpanel widget-int-shape responsive-mg-b-30 shadow" style="padding-top: 10px; padding-bottom: 20px;border: solid 1px #C7C7C7; border-radius: 5px;">
                 <div class="panel-body">
                     <div class="panel-title text-center">
-                        <small id="get_year_and_payee_info_{{$row->pmember_id}}"><b>{{$row->rname}}'s collection</b></small>
+                        <small id="get_year_and_payee_info_{{$row->transid}}"><b>{{$row->rname}}'s collection</b></small>
                         <div class="stats-icon pull-right">
                             <img src="{{asset('uploads/profiles/'.$row->rimgpath)}}" id="rpic{{$row->pmember_id}}_{{$row->transid}}" style="max-height:30px; max-width: 30px; border-radius: 50%;border: solid 1px #C7C7C7; margin-top: -6px;">
                         </div>
@@ -24,7 +24,7 @@
                     <div class="m-t-xl widget-cl-1" style="padding-top: 70px;">
 
                         <small>
-                            {{$row->psurname}} has paid <span class="text-danger"><b>
+                            <span id="get_payee_name_{{$row->pmember_id}}">{{$row->psurname}}</span> has paid <span class="text-danger"><b>
                                     GHC<span id="amount_paid{{$row->pmember_id}}_{{$row->transid}}">{{$row->tpaid}}</span>
 
                                                 </b></span>

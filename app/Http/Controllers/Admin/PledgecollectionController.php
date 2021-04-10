@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Churchgiven;
 use App\Helpers\Given;
 use App\Helpers\ProcessFunctions;
 use App\Http\Requests;
@@ -9,9 +10,14 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Churchcustompayment;
 use App\Models\Membercustompayment;
+use App\Models\Memberdetail;
+use App\Models\Months;
 use App\Models\payment_history;
 use App\Models\Pledgecollection;
 use App\Traits\PaymentHistoryTrait;
+use App\Traits\ReportDBTrait;
+use App\Traits\SMSTraits;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\General;
 use Illuminate\Support\Arr;
@@ -19,7 +25,8 @@ use Illuminate\Support\Facades\DB;
 
 class PledgecollectionController extends General
 {
-
+ 
+    use SMSTraits;
     use PaymentHistoryTrait;
    protected $model = payment_history::class;
       protected $viewname = 'pledgecollection';
@@ -48,7 +55,7 @@ if(\Request::ajax()) {
 
             $table = "CREATE TEMPORARY TABLE IF NOT EXISTS ".$tempname." (rname varchar(100),ryear year,date_joined date,mleft integer,
         pimgpath varchar(300),point_sub_id integer ,amount  decimal(18,2),tpaid  decimal(18,2),pmember_id integer,pmember_ch_id varchar(100), totalm integer,date_paid date)";
-            $sql = "select CONCAT( surname, ' ', other_names) name, date_joined,id as memid,new_member_id ,img_path from  memberdetails where (new_member_id like '%$keyword%' or 
+            $sql = $this->fetchMemberDataQuery2()."  where status_id =1 and (new_member_id like '%$keyword%' or 
  CONCAT( surname, ' ', other_names)  like '%$keyword%')";
 
             $db = DB::select($sql);
@@ -59,7 +66,13 @@ if(\Request::ajax()) {
             $arr=[];
             $eyear = $this->currentyear();
             foreach ($db as $row){
+
                 $myear = $this->convert_date_to_year($row->date_joined);
+                /*
+                if($row->status_id==config('relatedvariables.ch_config.memberdeceased')){
+                    $eyear=$this->convert_date_to_year($row->date_died);
+                }
+                */
                 ( $myear<= 2017 ? $syear = 2017 : $syear = $myear);
                 for($j=$syear; $j<=$eyear;$j++){
                     if ($myear == $j) {
@@ -71,7 +84,18 @@ if(\Request::ajax()) {
                         $clause=12;
 
                     }
+                    /*
+                    if($row->status_id==config('relatedvariables.ch_config.memberdeceased')){
 
+                          if($eyear==$j){
+                              $splitdate = $this->explodearray('-',$row->date_died);
+                              $clause = ProcessFunctions::get_month_to_begin_collection_calculation_from_date_died($splitdate[1],$splitdate[2]) ;
+
+
+                          }
+
+                    }
+                    */
                     $fetch =  "INSERT INTO ".$tempname."(mleft,date_joined,point_sub_id,rname,pimgpath,pmember_ch_id,amount,tpaid,date_paid,totalm,ryear,pmember_id) select '$clause','$row->date_joined', t1.point_sub_id,'$row->name','$row->img_path','$row->new_member_id',IFNULL(t1.amount,0.00),
                    sum(IFNULL(t1.amount_paid,0)) as amp ,max(t1.date_paid) as dpaid,count(distinct(t1.month_paid)) as total,IFNULL(t1.year,'$j'),IFNULL(t1.member_id,'$row->memid')
  from (select pa.amount,p.date_paid,m.ident,p.point_id,p.point_sub_id,p.amount_paid, p.year,p.member_id,p.month_paid from months m left join payment_histories p on m.ident = p.month_paid and p.member_id = '$row->memid' 
@@ -113,7 +137,7 @@ if(\Request::ajax()) {
     public function  getpledgeyeardetails(Request $request)
     {
         $tempname='pledgesearch'.$this->getuserid();
-$clause='';
+        $clause='';
         $vars = explode('_',$request->id);
         $myear = $this->convert_date_to_year($vars[4]);
         $splitdate = $this->explodearray('-',$vars[4]);
@@ -123,6 +147,18 @@ $clause='';
 
 
             $clause = 'where  m.ident >=' . $clause;
+
+        }
+
+        $ismemberDeceased = DB::select('select status_id,date_died  from memberdetails where id=?',[$vars[0]]);
+
+
+        if($ismemberDeceased[0]->status_id == config('relatedvariables.ch_config.memberdeceased') && $vars[2]==$this->convert_date_to_year($ismemberDeceased[0]->date_died)){
+            $splitdate = $this->explodearray('-',$ismemberDeceased[0]->date_died);
+
+            $clause= ProcessFunctions::get_month_to_begin_collection_calculation_from_date_died($splitdate[1],$splitdate[2]) ;
+            $clause = 'where  m.ident <=' . $clause;
+
         }
         $fetch =  "select t1.point_sub_id,sum(IFNULL(t1.amount_paid,0)) as amp ,t1.month_paid,t1.ident,t1.name
 ,max(t1.date_paid) as dpaid,t1.year from (select  p.date_paid,m.ident,m.name,
@@ -137,6 +173,7 @@ p.point_sub_id,p.amount_paid, p.year,p.month_paid from months m left join paymen
     public function store(Request $request)
     {
            $newpledgeamount = $request->defined_amount;
+           $month=[];
 
             $pdetails = explode('_',$request->p_details);
              $pledeID=0;
@@ -167,7 +204,9 @@ p.point_sub_id,p.amount_paid, p.year,p.month_paid from months m left join paymen
                 $mod = Membercustompayment::create($data);
                 $pledgeID = $mod->id;
                 foreach ($this->explodearray(',', $allm) as $mont) {
-                    $this->create_payment_history($mont, $pdetails[0], $newpledgeamount / $clause, $year_pledge, $pledgeID, 2,$this->pointID);
+                    $month[] =$this->getmonthname($mont);
+                    $type=2;
+                    $this->create_payment_history($mont, $pdetails[0], $newpledgeamount / $clause, $year_pledge, $pledgeID, $type,$this->pointID);
 
                     $resp = '<p class="text-center text-success"><b>Transaction successful!!!.</b></p>';
                 }
@@ -176,7 +215,9 @@ p.point_sub_id,p.amount_paid, p.year,p.month_paid from months m left join paymen
         }
         else{
             foreach($this->explodearray(',',$allm) as $mont) {
-                $this->create_payment_history($mont, $pdetails[0], $request->amount_paid / count($this->explodearray(',', $allm)), $year_pledge, 0, 4,$this->pointID);
+                $month[] =$this->getmonthname($mont);
+                $type =4;
+                $this->create_payment_history($mont, $pdetails[0], $request->amount_paid / count($this->explodearray(',', $allm)), $year_pledge, 0, $type,$this->pointID);
 
 
                 $resp = '<p class="text-center text-success"><b>Transaction successful!!!.</b></p>';
@@ -187,24 +228,43 @@ p.point_sub_id,p.amount_paid, p.year,p.month_paid from months m left join paymen
 
                  if($pdetails[1]> 0){
                      foreach($this->explodearray(',',$allm) as $mont) {
-                         $this->create_payment_history($mont, $pdetails[0], $pdetails[1] / $clause, $year_pledge, $pdetails[5], 2,$this->pointID);
+                         $month[] =$this->getmonthname($mont);
+                         $type =2;
+                         $this->create_payment_history($mont, $pdetails[0], $pdetails[1] / $clause, $year_pledge, $pdetails[5], $type,$this->pointID);
                      }
                      $resp='<p class="text-center text-success"><b>Transaction successful!!!.</b></p>';
                  }
 
                  else{
                      foreach($this->explodearray(',',$allm) as $mont) {
-                         $this->create_payment_history($mont, $pdetails[0], $request->amount_paid / count($this->explodearray(',', $allm)), $year_pledge, 0, 4,$this->pointID);
+                        $month[] =$this->getmonthname($mont);
+                         $type =4;
+                         $this->create_payment_history($mont, $pdetails[0], $request->amount_paid / count($this->explodearray(',', $allm)), $year_pledge, 0, $type,$this->pointID);
                      }
                      $resp='<p class="text-center text-success"><b>Transaction successful!!!.</b></p>';
+
+
+
                  }
 
              }
 
+        $custom_data = Churchgiven::where('id',$type)->first();
+        $contact = Memberdetail::where('id',$pdetails[0])->first();
+
+        $numbers = $this->explodearray('/', $contact->phone_numbers);
+        foreach($numbers as $item){
+
+            $arraycontact[]=$item;
+
+        }
+        $mess = 'An amount of GHC'.number_format($request->amount_paid,2).' has been paid for '.$this->implodearray($month). ' ' .$year_pledge.' Pledge Contribution ';
+        $this->sendbulksms($arraycontact,'NewAbossEPC',$mess,false,'');
+
+
 
         return response()->json(['data'=>$resp]);
     }
-
 
 
 

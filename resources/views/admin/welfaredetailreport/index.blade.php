@@ -40,15 +40,16 @@
                         </div>
                     </div>
                 </div>
+
                 {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['type', 'false','type_collection' ,"form-control","",DBSELOPTION::get_all_collection_based_groups(2),$errors,$read,'  Welfare Type?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['year_paid', 'false','3' ,"form-control","",DBSELOPTION::get_all_years(),$errors,$read,'  Start Year ?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['end_year', 'false','3' ,"form-control","",DBSELOPTION::get_all_years(),$errors,$read,'   End Year?',null])!!}
 
-                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['month_paid', 'false','2' ,"form-control","",DBSELOPTION::get_all_month(),$errors,$read,'  By Month ?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['start_month', 'false','2' ,"form-control","",DBSELOPTION::get_all_month(),$errors,$read,'  Start Month ?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['end_month', 'false','2' ,"form-control","",DBSELOPTION::get_all_month(),$errors,$read,'  End Month ?',null])!!}
 
-                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['year_paid', 'false','3' ,"form-control","",DBSELOPTION::get_all_years(),$errors,$read,'  By Year ?',null])!!}
+                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['fetch_type', 'false','19' ,"form-control","",['1'=>'None paid month','2'=>'paid month','3'=>'group by year','4'=>'group by year range'],$errors,$read,' Filter By?',null])!!}
 
-                {!! HtmlEntities::get_dynamic_form_complete_collective_c3_input(['text','start_date','form-control','start','',$errors,'',$read,'Start Date ']) !!}
-                {!! HtmlEntities::get_dynamic_form_complete_collective_c3_input(['text','end_date','form-control','finish','',$errors,'',$read,'End Date']) !!}
-                {!! HtmlEntities::get_dynamic_form_complete_select_c3_collective(['fetch_type', 'false','19' ,"form-control","",['1'=>'None paid month','2'=>'paid month'],$errors,$read,' Sort By?',null])!!}
 
 
                 <div>

@@ -17,20 +17,35 @@ use Illuminate\Support\Facades\DB;
 trait SMSTraits
 {
 
+    use HttpClient;
 
 
 
-    public function send_sms($mobile_number,$notification){
-        $client = new Client();
 
-        $response = $client->GET('http://bulk.mnotify.net//smsapi?key=782050755566bb6a2c8f&to='.$mobile_number.'&msg='.$notification.'&sender_id=WELL-LIFE');
+    public function sendbulksms($contact,$tag,$message,$state,$schedule_date){
 
-        return $response->getBody()->getContents();
+$endPoint = 'https://api.mnotify.com/api/sms/quick';
+$apiKey = 'd1h7iicBTAnWOPD7168W3mhKi1fWhefvgwDzPQaIqyEfo';
+$url = $endPoint . '?key=' . $apiKey;
+$data = [
+    'recipient' => $contact,
+    'sender' => $tag,
+    'message' => $message,
+    'is_schedule' => $state,
+    'schedule_date' => $schedule_date
+
+];
+return $this->curl_client($data,$url);
+
+
     }
 
-    public function set_guzzle()
-    {
+    public function checksmsbalance(){
+
+        $endPoint = 'https://api.mnotify.com/api/balance/voice';
+        $apiKey = 'd1h7iicBTAnWOPD7168W3mhKi1fWhefvgwDzPQaIqyEfo';
+        $url = $endPoint . '?key=' . $apiKey;
+
 
     }
-
 }

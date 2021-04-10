@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Permissions;
 use App\Traits\GeneralProcessTrait;
+use App\Traits\GeneralReportTrait;
 use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -14,12 +15,13 @@ use Illuminate\Support\Facades\DB;
 use App\Helpers\UserAuth;
 use Auth;
 use App\User;
+use App\Models\Months;
 use Illuminate\Support\Facades\Config;
 
 class General extends Controller
 {
-    use GeneralProcessTrait;
 
+    use GeneralReportTrait;
 
     protected  $viewname ;
     protected $vali;
@@ -38,11 +40,12 @@ class General extends Controller
 
     public function __construct()
     {
+
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
             /*************CHECK ALL ROLE PERMISSION ON USER**********/
        $this->right = Permissions::confirm_user_permission('/'.$this->path_custom.$this->viewname);
-       //dd($this->right);
+
             if(!\Request::ajax()) {
                 if ($this->get_access_type($this->viewname, $this->right, Route::currentRouteName()) == 0) {
                     session()->put('info','Oops!! permission Denied..');
@@ -171,6 +174,7 @@ class General extends Controller
 
     public function store(Request $request)
     {
+
         if($this->checkval($request)==0) {
             session()->put('error','There were validation errors');
             return $this->validateRequest($request);
@@ -210,6 +214,7 @@ class General extends Controller
 
     public function update(Request $request, $id)
     {
+
         if($this->checkval($request)==0) {
             session()->put('error','There were validation errors');
             return $this->validateRequest($request);
@@ -331,6 +336,14 @@ class General extends Controller
 
     }
 
+
+public function getmonthname($id){
+
+        $result =  Months::where('id',$id)->first();
+        return $result->name;
+
+
+    }
 
 
 }

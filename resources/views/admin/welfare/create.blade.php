@@ -88,10 +88,6 @@
                             </div>
                             {!! HtmlEntities::get_dynamic_form_complete_collective_input(['number','expected_people','form-control','p_amount_paying','',$errors,'','true','Total Amount Paying Ghc:']) !!}
 
-
-                            <div class="col-md-offset-2 col-md-8" style="display: none; margin-bottom: 20px;" id="show_annual_box_option">
-                                <button type="button" class="btn btn-block btn-info">Define Annual Pledge Amount</button>
-                            </div>
                             <section style="display: none"  id="show_annual_box">
                                 {!! HtmlEntities::get_dynamic_form_complete_collective_input(['number','indicate_annual_amount','form-control','show_annual_box','pannualamount',$errors,'','false','specify Annual Pledge Amount:']) !!}
                             </section>
