@@ -98,6 +98,7 @@ class MemberdetailsController extends General
             $this->member_processor($request, 1, $data,null);
 
             DB::commit();
+            '/'
 
             session()->put('success', 'Data Created Successful');
 
